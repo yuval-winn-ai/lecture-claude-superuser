@@ -33,6 +33,10 @@
     .reveal .key { display: inline-block; background: #27272a; border: 1px solid #52525b; border-radius: 6px; padding: 2px 10px; font-family: var(--r-code-font); font-size: 0.85em; }
     .reveal .demo-tag { display: inline-block; background: #7c3aed; color: white; padding: 2px 12px; border-radius: 12px; font-size: 0.5em; vertical-align: middle; margin-left: 12px; letter-spacing: 1px; text-transform: uppercase; }
     .reveal .phone-tag { background: #059669; }
+    /* Screen-tag variants used alongside .demo-tag to signal which screen a live demo uses. */
+    .reveal .laptop-tag { background: #7c3aed; }
+    .reveal .dashboard-tag { background: #2563eb; }
+    .reveal .chrome-tag { background: #ea580c; }
     .reveal .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left; }
     .reveal .fragment.current-visible.visible:not(.current-fragment) { display: none; }
     .reveal section { text-align: left; }
@@ -88,53 +92,45 @@
 
 <section>
   <h2>What We'll Cover</h2>
-  <div class="two-col" style="font-size: 0.75em;">
+  <div class="two-col" style="font-size: 0.72em;">
     <div>
-      <h3>Setup &amp; Foundations</h3>
-      <ul>
-        <li>Where to run Claude Code</li>
-        <li>Essential keyboard shortcuts</li>
-        <li>Plan mode &amp; settings</li>
-        <li>CLAUDE.md &amp; skills</li>
-      </ul>
-      <h3>Power Tools</h3>
-      <ul>
-        <li>Hooks &amp; notifications</li>
-        <li>TypeScript LSP plugin</li>
-        <li>Local MCP servers</li>
-        <li>Claude in Chrome</li>
-      </ul>
+      <h3>1 · Setup &amp; Foundations</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">Where to run, CWD hygiene, shortcuts, plan mode</p>
+      <h3>2 · Efficiency &amp; Focus</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">Token economics, context window, "interview me"</p>
+      <h3>3 · Encoding Knowledge</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">settings.json, CLAUDE.md, skills, guardrails</p>
+      <h3>4 · Never Watch Claude Work</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">Hooks, notifications, signature demo</p>
     </div>
     <div>
-      <h3>Workflows</h3>
-      <ul>
-        <li>CLI-first (gh, gcloud)</li>
-        <li>Fix PR review comments</li>
-        <li>Fix failed CI actions</li>
-        <li>"Interview me" pattern</li>
-      </ul>
-      <h3>Parallel Mastery</h3>
-      <ul>
-        <li>Git worktrees + Claude</li>
-        <li>Remote control</li>
-        <li>Session dashboard</li>
-        <li>Utility scripts</li>
-      </ul>
+      <h3>5 · Power Tools</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">LSP, MCP servers, Chrome, Qodo</p>
+      <h3>6 · CLI-First Workflows</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">gh, fix PR reviews, fix failed CI</p>
+      <h3>7 · Parallel Mastery</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">Worktrees, dashboard, remote control</p>
+      <h3>8 · Putting It Together</h3>
+      <p class="small" style="margin: 0;">The daily parallel recipe</p>
     </div>
   </div>
+  <aside class="notes">
+    Roadmap. Earlier sections teach single-session hygiene and efficiency —
+    those are the prerequisites for parallelism at the end.
+  </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 1: FOUNDATIONS                                        -->
+<!-- SECTION 1: SETUP &amp; FOUNDATIONS                              -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
   <div class="section-num">01</div>
-  <h2>Your Cockpit</h2>
-  <p class="subtitle">Foundations for parallel work</p>
+  <h2>Setup &amp; Foundations</h2>
+  <p class="subtitle">Your cockpit</p>
 </section>
 
-<!-- 1A: Where to Run Claude Code -->
+<!-- 1.1: Where to Run Claude Code -->
 <section>
   <h2>Where to Run Claude Code</h2>
   <table style="font-size: 0.6em;">
@@ -185,6 +181,7 @@
   </aside>
 </section>
 
+<!-- 1.2: The Verdict -->
 <section>
   <h2>The Verdict</h2>
   <div class="highlight-box" style="font-size: 0.85em;">
@@ -201,36 +198,92 @@
   </div>
 </section>
 
-<!-- 1A2: Open on the Right Project -->
-<section>
-  <h2>Open Claude on the <em>Right</em> Project</h2>
-  <p style="font-size: 0.78em;">Claude's working directory is the root of almost everything it knows.</p>
-  <table style="font-size: 0.6em;">
-    <thead>
-      <tr><th>Scoped to CWD</th><th>If you launch from the parent folder…</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>./CLAUDE.md</code></td><td class="red">Not loaded — project rules invisible</td></tr>
-      <tr><td><code>./.claude/settings.json</code></td><td class="red">Hooks, permissions, plan mode don't apply</td></tr>
-      <tr><td><code>./.mcp.json</code></td><td class="red">Per-project MCP servers miss</td></tr>
-      <tr><td><code>./.claude/skills/</code>, <code>agents/</code></td><td class="red">Project skills &amp; subagents invisible</td></tr>
-      <tr><td>Auto-memory namespace</td><td class="red">Wrong namespace — past context doesn't apply</td></tr>
-      <tr><td>Glob / Grep / Read</td><td class="orange">Scans all sibling repos — slow + noisy context</td></tr>
-      <tr><td>Git &amp; <code>gh</code> commands</td><td class="red">"Not a git repo" or wrong repo</td></tr>
-      <tr><td>Bash blast radius</td><td class="red"><code>rm -rf</code> can reach every sibling</td></tr>
-    </tbody>
-  </table>
-  <div class="highlight-box" style="font-size: 0.85em; margin-top: 10px;">
-    <strong>Rule for parallel sessions:</strong> 1 Claude process = 1 project root.
+<!-- 1.3: WHY This Matters (runway into the deep-dive) -->
+<section class="center-slide">
+  <h2>Why This Matters</h2>
+  <div class="highlight-box" style="font-size: 0.95em; text-align: left; max-width: 780px; margin: 0 auto;">
+    <p style="margin: 0 0 0.6em 0;">This is <strong class="orange">contested territory</strong>.</p>
+    <p style="margin: 0 0 0.6em 0;">Most devs launch Claude from whichever VSCode window happens to be open — usually a parent of many repos.</p>
+    <p style="margin: 0;"><span class="red">That habit quietly destroys almost everything else in this talk.</span></p>
   </div>
+  <p class="fragment" style="font-size: 0.8em; margin-top: 1em; text-align: center;">
+    The next few slides are the case for why working correctly with Claude<br>
+    — starting with a real terminal — is the foundation everything sits on.
+  </p>
   <aside class="notes">
-    The parent-folder habit is the silent killer of everything else in this talk.
-    Memory, CLAUDE.md, MCP, hooks, git context — all keyed to CWD.
-    Launch from the parent and none of them apply, and you won't get an error — just quiet degradation.
+    Frame the deep-dive. This is where a lot of the audience pushes back — "I like VSCode,
+    why should I change?" The next slides don't argue aesthetics; they show what silently
+    stops working when CWD is wrong. By the end of §1, they should be convinced that Warp
+    (or iTerm2) isn't a preference — it's the default that makes the rest of the talk work.
   </aside>
 </section>
 
-<!-- 1A3: VSCode Parent-Folder Trap -->
+<!-- 1.4: What's Scoped to CWD (merged from "Open Right Project" + "What Actually Breaks") -->
+<section>
+  <h2>Everything Keys Off the Working Directory</h2>
+  <p style="font-size: 0.76em;">Claude's CWD is the root of almost everything it knows about your project.</p>
+  <table style="font-size: 0.55em;">
+    <thead>
+      <tr><th>System</th><th>Correct CWD (one project root)</th><th>Parent-folder CWD</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CLAUDE.md</code></td>
+        <td class="green">Project rules loaded (gh CLI, Jira field IDs…)</td>
+        <td class="red">Ignored — Claude has no project context</td>
+      </tr>
+      <tr>
+        <td><code>.claude/settings.json</code></td>
+        <td class="green">Plan mode, permissions, hooks apply</td>
+        <td class="red">Project defaults silently discarded</td>
+      </tr>
+      <tr>
+        <td><code>.mcp.json</code></td>
+        <td class="green">Project MCP servers available</td>
+        <td class="red">Claude can't reach the project's DB/API</td>
+      </tr>
+      <tr>
+        <td>Skills &amp; subagents</td>
+        <td class="green">Project skills &amp; subagents work</td>
+        <td class="red">Commands return "skill not found"</td>
+      </tr>
+      <tr>
+        <td>Auto-memory</td>
+        <td class="green">Keyed to project path — past sessions recalled</td>
+        <td class="red">Parent namespace — fresh amnesia each time</td>
+      </tr>
+      <tr>
+        <td>Glob / Grep / Read</td>
+        <td class="green">Scoped to project</td>
+        <td class="orange">Scans all sibling repos — pollutes context</td>
+      </tr>
+      <tr>
+        <td><code>git</code> / <code>gh</code></td>
+        <td class="green">Right repo by default</td>
+        <td class="red">"Not a git repo" — or worse, wrong one</td>
+      </tr>
+      <tr>
+        <td>Bash blast radius</td>
+        <td class="green">Scoped to project tree</td>
+        <td class="red"><code>rm</code>, <code>find -delete</code> can reach siblings</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="highlight-box" style="font-size: 0.85em; margin-top: 10px; text-align: center;">
+    <strong>Rule for parallel sessions:</strong> 1 Claude process = 1 project root.
+  </div>
+  <aside class="notes">
+    Walk down the table row by row. Make MCP vivid — the session can't reach MongoDB because
+    .mcp.json didn't load. Memory too — a session that "remembers" in the right CWD writes to
+    an orphan namespace in the parent. The git row is the one that bites fastest: gh pr view
+    fails, and nobody thinks to check CWD.
+
+    This table is the evidence behind the "1 Claude = 1 project root" rule. Everything else in
+    §1 builds on this.
+  </aside>
+</section>
+
+<!-- 1.5: The VSCode Parent-Folder Trap (Warp-promotion slide) -->
 <section>
   <h2>The VSCode Parent-Folder Trap</h2>
   <p style="font-size: 0.78em;">
@@ -261,70 +314,15 @@ code ~/work     ← opens parent</code></pre>
     </div>
   </div>
   <aside class="notes">
-    If people remember one thing from Section 1, this is it.
-    Multi-root workspaces are the decent compromise for VSCode addicts,
-    but once you have 5+ parallel sessions, separate Warp tabs each cd'd into their repo wins.
+    If people remember one thing from §1, this is it.
+    Multi-root workspaces are the decent compromise for VSCode addicts, but once you have
+    5+ parallel sessions, separate Warp tabs each cd'd into their repo wins every time.
+    This is the moment to lean into the Warp-promotion argument: the terminal is not a legacy
+    tool here, it's the native UI for running many Claude sessions in parallel.
   </aside>
 </section>
 
-<!-- 1A3b: What Actually Breaks in parent-folder mode -->
-<section>
-  <h2>What Actually Breaks<span class="demo-tag">parent-folder mode</span></h2>
-  <table style="font-size: 0.55em;">
-    <thead>
-      <tr><th>System</th><th>Correct CWD</th><th>Parent-folder CWD</th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>CLAUDE.md</code></td>
-        <td class="green">Project rules loaded<br>(gh CLI, Jira field IDs…)</td>
-        <td class="red">Ignored — Claude has no project context</td>
-      </tr>
-      <tr>
-        <td><code>.claude/settings.json</code></td>
-        <td class="green">Plan mode, permissions, hooks apply</td>
-        <td class="red">Project defaults silently discarded</td>
-      </tr>
-      <tr>
-        <td><code>.mcp.json</code></td>
-        <td class="green">Project MCP servers available</td>
-        <td class="red">Claude can't reach the project's DB/API</td>
-      </tr>
-      <tr>
-        <td>Skills &amp; subagents</td>
-        <td class="green"><code>/update-jira</code>, project subagents work</td>
-        <td class="red">Commands return "skill not found"</td>
-      </tr>
-      <tr>
-        <td>Auto-memory</td>
-        <td class="green">Keyed to project path — past sessions recalled</td>
-        <td class="red">Parent namespace — fresh amnesia each time</td>
-      </tr>
-      <tr>
-        <td>Glob / Grep / Read</td>
-        <td class="green">Scoped to project</td>
-        <td class="orange">Scans all 20 repos — pollutes context</td>
-      </tr>
-      <tr>
-        <td><code>git</code> / <code>gh</code></td>
-        <td class="green">Right repo by default</td>
-        <td class="red">"Not a git repo" — or worse, wrong one</td>
-      </tr>
-      <tr>
-        <td>Bash blast radius</td>
-        <td class="green">Scoped to project tree</td>
-        <td class="red"><code>rm</code>, <code>find -delete</code> can reach siblings</td>
-      </tr>
-    </tbody>
-  </table>
-  <aside class="notes">
-    Walk through each row. Make MCP vivid — the session can't reach MongoDB because .mcp.json didn't load.
-    Memory too — a session that "remembers" in the right CWD writes to an orphan namespace in the parent.
-    The git row is the one that bites fastest: gh pr view fails, and nobody thinks to check CWD.
-  </aside>
-</section>
-
-<!-- 1A3c: Silent Failure Mode -->
+<!-- 1.6: The Silent Failure Mode -->
 <section>
   <h2>The Silent Failure Mode</h2>
   <div class="highlight-box" style="border-color: #ef4444; font-size: 0.9em;">
@@ -334,7 +332,7 @@ code ~/work     ← opens parent</code></pre>
   <br>
   <div class="two-col">
     <div>
-      <h3 class="red">How this looks in practice</h3>
+      <h3 class="red">Symptoms</h3>
       <ul style="font-size: 0.7em;">
         <li>Claude uses <code>curl</code> when your CLAUDE.md said "always use <code>gh</code>"</li>
         <li>Claude asks questions already answered by a project skill</li>
@@ -350,7 +348,7 @@ code ~/work     ← opens parent</code></pre>
         <li>First turn: <strong>"What's your CWD? Which <code>CLAUDE.md</code> files loaded?"</strong></li>
         <li>Status line — show CWD in your config</li>
         <li><code>/status</code> command</li>
-        <li>Check the working-directory line in the system prompt (<code>Ctrl+O</code> transcript)</li>
+        <li>Check the working-directory line in the system prompt (<span class="key">Ctrl+O</span> transcript)</li>
       </ul>
     </div>
   </div>
@@ -361,7 +359,7 @@ code ~/work     ← opens parent</code></pre>
   </aside>
 </section>
 
-<!-- 1A4: Cross-Repo — When a Session Spans Multiple Projects -->
+<!-- 1.7: When a Session Spans Multiple Projects -->
 <section>
   <h2>When a Session <em>Spans</em> Multiple Projects</h2>
   <p style="font-size: 0.82em;">
@@ -377,7 +375,7 @@ code ~/work     ← opens parent</code></pre>
       <h3 class="red">Wrong</h3>
       <pre><code class="language-bash">cd ~/work         # parent
 claude            # CWD = ~/work
-# lose everything from slide 1A3b</code></pre>
+# lose everything from slide 1.4</code></pre>
     </div>
     <div>
       <h3 class="green">Right</h3>
@@ -393,7 +391,7 @@ claude \
   </aside>
 </section>
 
-<!-- 1A5: --add-dir Recipe -->
+<!-- 1.8: --add-dir Recipe -->
 <section>
   <h2><code>--add-dir</code> — Anchor Primary, Extend Scope</h2>
   <p style="font-size: 0.8em;">CWD stays anchored to the primary; peers are explicitly granted.</p>
@@ -429,7 +427,7 @@ claude \
   </aside>
 </section>
 
-<!-- 1A6: Picking the Primary + Orientation -->
+<!-- 1.9: Picking the Primary + Orientation -->
 <section>
   <h2>Picking the Primary + Orienting Claude</h2>
   <div class="two-col">
@@ -464,7 +462,7 @@ making any changes.</code></pre>
   </aside>
 </section>
 
-<!-- 1A7: Cross-Repo Guardrails -->
+<!-- 1.10: Cross-Repo Guardrails -->
 <section>
   <h2>Cross-Repo Guardrails</h2>
   <p style="font-size: 0.78em;">Multi-repo sessions are the highest-blast-radius work. Tighten the controls.</p>
@@ -503,7 +501,7 @@ making any changes.</code></pre>
   </aside>
 </section>
 
-<!-- 1A8: When NOT to Go Multi-Repo + Umbrella Pattern -->
+<!-- 1.11: When NOT to Go Multi-Repo + Umbrella Pattern -->
 <section>
   <h2>When <em>Not</em> to Go Multi-Repo</h2>
   <div class="two-col">
@@ -535,9 +533,9 @@ making any changes.</code></pre>
   </aside>
 </section>
 
-<!-- 1B: Keyboard Shortcuts -->
+<!-- 1.12: Keyboard Shortcuts -->
 <section>
-  <h2>Essential Shortcuts<span class="demo-tag">live demo</span></h2>
+  <h2>Essential Shortcuts<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <table style="font-size: 0.72em;">
     <thead>
       <tr><th>Shortcut</th><th>Action</th><th>Why It Matters</th></tr>
@@ -587,17 +585,24 @@ making any changes.</code></pre>
   </table>
   <p style="font-size: 0.65em; margin-top: 12px;">Press <span class="key">?</span> inside Claude for the full shortcut reference.</p>
   <aside class="notes">
-    DEMO: Show Escape to interrupt a running response.
-    Show Ctrl+O transcript viewer — great for seeing what MCP calls Claude made.
-    Show Shift+Tab to cycle through plan/auto/code modes.
-    Option+P for model picker — left/right arrows change effort level.
-    Remind: press ? anytime for built-in help.
+    DEMO — Essential Shortcuts
+
+    SCREEN: laptop (Warp)
+    SETUP: One Claude session running with a multi-turn task in progress.
+    ACTIONS:
+      1. Start Claude on a task; while it's generating, hit Esc — show the interrupt.
+      2. Type a prompt, hit Ctrl+G — show it opens in $EDITOR.
+      3. Ctrl+O — toggle transcript viewer, point out the tool calls.
+      4. Shift+Tab — cycle to plan mode, then back.
+      5. Press ? to show the full reference.
+    KEY POINT: These shortcuts are the difference between babysitting one session and
+    conducting five. Escape in particular lets you redirect before cost compounds.
   </aside>
 </section>
 
-<!-- 1C: Plan Mode -->
+<!-- 1.13: Plan Mode -->
 <section>
-  <h2>Plan Mode<span class="demo-tag">live demo</span></h2>
+  <h2>Plan Mode<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <p style="font-size: 0.8em;">With 6 sessions running, the bottleneck is <strong>your attention</strong>, not Claude's speed.</p>
   <div class="two-col">
     <div>
@@ -626,49 +631,36 @@ making any changes.</code></pre>
   }
 }</code></pre>
   <aside class="notes">
-    DEMO: Start a task in plan mode. Show the plan appearing.
-    Review it, approve it. Then Shift+Tab to flip a session into accept-edits
-    when you want to let it rip.
+    DEMO — Plan Mode
 
-    Key point: plan mode isn't about safety paranoia — it's about review economics.
-    Plans are cheap to skim across many sessions; diffs are not. And a wrong plan
-    is cheaper to fix than wrong code that other edits were built on top of.
-  </aside>
-</section>
-
-<section>
-  <h2>Update Claude's Settings</h2>
-  <div class="highlight-box">
-    <p>If Claude doesn't follow your instructions<br><strong>more than once</strong> — don't just repeat yourself.</p>
-    <p class="fragment" style="color: var(--accent);">Update its configuration to make it permanent.</p>
-  </div>
-  <ul style="font-size: 0.8em;">
-    <li class="fragment"><code>~/.claude/settings.json</code> — hooks, permissions, plugins, default mode</li>
-    <li class="fragment"><code>~/.claude/CLAUDE.md</code> — persistent behavioral instructions</li>
-    <li class="fragment"><code>.claude/settings.json</code> — per-project overrides</li>
-    <li class="fragment"><code>/update-config</code> — ask Claude to update its own config</li>
-  </ul>
-  <aside class="notes">
-    Key insight: Claude reads these files every session. If you keep telling Claude the same thing,
-    make it a permanent instruction. This is especially important for parallel work —
-    you don't want to repeat context in every session.
+    SCREEN: laptop (Warp)
+    SETUP: Fresh Claude session in a real repo, plan mode set as default in settings.json.
+    ACTIONS:
+      1. Give Claude a moderate task ("add input validation to the login endpoint").
+      2. Show the plan appearing; review it out loud.
+      3. Approve — show edits proceeding.
+      4. Shift+Tab to show flipping to accept-edits for the next prompt.
+    KEY POINT: Plan mode isn't paranoia — it's review economics. Plans are cheap to skim
+    across many sessions; diffs are not. A wrong plan is cheaper to fix than wrong code
+    that other edits were built on top of.
   </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 2: COMMUNICATION                                     -->
+<!-- SECTION 2: EFFICIENCY &amp; FOCUS                               -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
   <div class="section-num">02</div>
-  <h2>Talking to Claude</h2>
-  <p class="subtitle">The bottleneck in parallel work is YOU</p>
+  <h2>Efficiency &amp; Focus</h2>
+  <p class="subtitle">Make one session lean — then multiply</p>
 </section>
 
-<!-- 2A: File References -->
+<!-- 2.1: File References & Context (merged) -->
 <section>
   <h2>File References &amp; Context</h2>
-  <div class="two-col">
+  <p style="font-size: 0.78em;">The IDE tells Claude <em>what you're looking at</em>. <code>@filename</code> inlines the <em>whole file</em>.</p>
+  <div class="two-col" style="margin-bottom: 0.6em;">
     <div>
       <h3 class="red">Wasteful</h3>
       <pre><code class="language-text">@src/services/auth.ts
@@ -684,44 +676,26 @@ making any changes.</code></pre>
 (reads only what's needed)</code></pre>
     </div>
   </div>
-  <aside class="notes">
-    @ is convenient but sends the entire file. For large files, telling Claude
-    which lines to read is much more efficient.
-    In parallel work, short focused sessions are better than one mega-session
-    that hits context limits.
-  </aside>
-</section>
-
-<!-- 2A2: How the VSCode Extension Shares Context -->
-<section>
-  <h2>How the VSCode Extension Shares Context</h2>
-  <p style="font-size: 0.8em;">The IDE tells Claude <em>what you're looking at</em> — not the full file.</p>
-  <table style="font-size: 0.66em;">
+  <table style="font-size: 0.6em;">
     <thead>
-      <tr><th>Signal</th><th>What's sent</th><th>Cost</th></tr>
+      <tr><th>IDE signal</th><th>What's sent</th><th>Cost</th></tr>
     </thead>
     <tbody>
-      <tr><td>Active file</td><td>Path + cursor position</td><td class="green">Tiny (pointer)</td></tr>
+      <tr><td>Active file / cursor</td><td>Path + position</td><td class="green">Tiny (pointer)</td></tr>
       <tr><td>Selection</td><td>Selected text inline</td><td class="green">Small</td></tr>
       <tr><td>Open tabs</td><td>List of paths</td><td class="green">Tiny</td></tr>
       <tr><td>LSP diagnostics</td><td>Errors/warnings in view</td><td class="green">Small</td></tr>
-      <tr><td><code>@filename</code> in prompt</td><td class="red">Entire file inlined as text</td><td class="red">Can be huge</td></tr>
+      <tr><td><code>@filename</code> in prompt</td><td class="red">Entire file inlined</td><td class="red">Can be huge</td></tr>
     </tbody>
   </table>
-  <div class="highlight-box" style="font-size: 0.82em; margin-top: 12px;">
-    Claude fetches content on demand via <code>Read</code> with <code>offset</code>/<code>limit</code>.<br>
-    <span class="green">IDE auto-context = efficient.</span> &nbsp;
-    <span class="red"><code>@filename</code> = expensive.</span>
-  </div>
   <aside class="notes">
-    Common misconception: the VSCode extension ships the whole file on every turn. It doesn't.
-    It sends a lightweight pointer — path, selection, diagnostics. Claude decides what to Read.
-    The @ shortcut is the wasteful pattern — it inlines the full file. Use line ranges or let
-    the IDE pointer do the work.
+    Common misconception: the VSCode extension ships the whole file on every turn. It doesn't —
+    it sends a lightweight pointer. Claude decides what to Read. The @ shortcut is the wasteful
+    pattern — it inlines the full file. Use line ranges or let the IDE pointer do the work.
   </aside>
 </section>
 
-<!-- 2A3: Why Token Waste Hurts -->
+<!-- 2.2: Why Token Waste Hurts -->
 <section>
   <h2>Why Token Waste Hurts</h2>
   <p style="font-size: 0.82em;">One session's bloat taxes the whole fleet.</p>
@@ -748,13 +722,14 @@ making any changes.</code></pre>
     - Compaction is lossy. Post-compaction sessions often repeat mistakes the pre-compaction session already learned from.
     - Cache busting: Claude Code caches the conversation prefix. Churn in that prefix makes every turn pay the miss.
     - Fleet tax: every extra second per turn compounds across 5+ parallel sessions.
-    This slide is the *why* behind the next slide's "many short sessions" recommendation.
+    This slide is the *why* behind the next slide's "many short sessions" recommendation —
+    and the *prerequisite* for §7 parallel work.
   </aside>
 </section>
 
-<!-- 2B: Context Window -->
+<!-- 2.3: Context Window -->
 <section>
-  <h2>Context Window<span class="demo-tag">live demo</span></h2>
+  <h2>Context Window<span class="demo-tag">live demo</span><span class="demo-tag chrome-tag">chrome</span></h2>
   <div class="two-col">
     <div>
       <h3 class="red">One mega-session</h3>
@@ -782,50 +757,91 @@ making any changes.</code></pre>
     <span style="font-size: 0.8em; color: var(--accent3);">Interactive context window visualizer</span>
   </div>
   <aside class="notes">
-    Open the context window docs page — show the interactive visualizer.
-    The key insight: parallel short sessions are BETTER than one long session,
-    not just safer. Each session starts fresh with full context.
-    Demo: show the interactive breakdown of what fills context — system prompt,
-    conversation history, tool results, files.
+    DEMO — Context Window
+
+    SCREEN: chrome (docs page projected)
+    SETUP: Tab pre-loaded on docs.anthropic.com context-window page.
+    ACTIONS:
+      1. Switch to the browser, show the interactive visualizer.
+      2. Point at each slice — system prompt, conversation, tool results, files.
+      3. Click through the expanding-context example.
+    KEY POINT: Parallel short sessions aren't just safer than one long session — each starts
+    fresh with full context. This is the prerequisite mindset for §7.
   </aside>
 </section>
 
-<!-- 2C: Interview Me -->
+<!-- 2.4: Interview Me (merged) -->
 <section>
-  <h2>"Interview Me"<span class="demo-tag">live demo</span></h2>
-  <div class="highlight-box" style="font-size: 1.1em; text-align: center;">
+  <h2>"Interview Me"<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
+  <div class="highlight-box" style="font-size: 1em; text-align: center;">
     Instead of writing a long spec,<br>let Claude ask the questions.
   </div>
-  <br>
-  <div class="fragment">
-    <pre><code class="language-text">"I need a new API endpoint for user notifications.
- Interview me about the requirements before writing any code."</code></pre>
-  </div>
-  <div class="fragment">
-    <p style="font-size: 0.8em; color: var(--accent3);">Claude asks: What notification types? Push or email? Who triggers them?<br>
-    Rate limits? Persistence? Read receipts?</p>
+  <div class="two-col" style="margin-top: 0.8em;">
+    <div>
+      <h3 class="green">Before coding</h3>
+      <pre style="font-size: 0.7em;"><code class="language-text">"I need a new API endpoint for user
+ notifications. Interview me about the
+ requirements before writing any code."</code></pre>
+      <p style="font-size: 0.7em; color: var(--accent3); margin-top: 0.4em;">
+        Claude asks 3-4 targeted questions —<br>faster than writing a spec.
+      </p>
+    </div>
+    <div>
+      <h3 class="red">Before a workaround</h3>
+      <pre style="font-size: 0.7em;"><code class="language-text">"Don't work around this. Interview me
+ about what I actually need — there
+ might be a simpler approach we're
+ both missing."</code></pre>
+      <p style="font-size: 0.7em; color: var(--accent); margin-top: 0.4em;">
+        Prevents rabbit holes —<br>especially in sessions you can't watch.
+      </p>
+    </div>
   </div>
   <aside class="notes">
-    DEMO: Start a new session. Type the interview prompt. Show Claude asking 3-4 targeted questions.
-    This is faster than writing a spec because Claude asks the RIGHT questions.
+    DEMO — Interview Me
+
+    SCREEN: laptop (Warp)
+    SETUP: New Claude session in a real repo.
+    ACTIONS:
+      1. Paste the "before coding" prompt. Let Claude ask 3-4 questions.
+      2. Answer briefly, let it produce a plan.
+      3. If time: show the "before workaround" variant on a fake hack suggestion.
+    KEY POINT: Claude asks the RIGHT questions — saving you the work of writing a spec, and
+    avoiding wrong turns when you're not watching.
   </aside>
 </section>
 
-<section>
-  <h2>"Interview Me Before Workarounds"</h2>
-  <div class="highlight-box" style="border-color: #ef4444;">
-    When Claude suggests a hack or workaround:
-  </div>
-  <pre><code class="language-text">"Don't workaround this. Interview me about what I actually
- need — there might be a simpler approach we're both missing."</code></pre>
-  <br>
-  <p style="font-size: 0.8em;" class="fragment">
-    This prevents Claude from going down rabbit holes —<br>
-    <strong class="purple">especially important when you can't watch every session.</strong>
-  </p>
+<!-- ============================================================ -->
+<!-- SECTION 3: ENCODING KNOWLEDGE                                -->
+<!-- ============================================================ -->
+
+<section class="section-divider center-slide">
+  <div class="section-num">03</div>
+  <h2>Encoding Knowledge</h2>
+  <p class="subtitle">Write it down once — every session already knows</p>
 </section>
 
-<!-- 2C: CLAUDE.md and Skills -->
+<!-- 3.1: Update Claude's Settings -->
+<section>
+  <h2>Update Claude's Settings</h2>
+  <div class="highlight-box">
+    <p>If Claude doesn't follow your instructions<br><strong>more than once</strong> — don't just repeat yourself.</p>
+    <p class="fragment" style="color: var(--accent);">Update its configuration to make it permanent.</p>
+  </div>
+  <ul style="font-size: 0.8em;">
+    <li class="fragment"><code>~/.claude/settings.json</code> — hooks, permissions, plugins, default mode</li>
+    <li class="fragment"><code>~/.claude/CLAUDE.md</code> — persistent behavioral instructions</li>
+    <li class="fragment"><code>.claude/settings.json</code> — per-project overrides</li>
+    <li class="fragment"><code>/update-config</code> — ask Claude to update its own config</li>
+  </ul>
+  <aside class="notes">
+    Key insight: Claude reads these files every session. If you keep telling Claude the same thing,
+    make it a permanent instruction. Especially important for parallel work — you don't want to
+    repeat context in every session.
+  </aside>
+</section>
+
+<!-- 3.2: CLAUDE.md -->
 <section>
   <h2>CLAUDE.md — Persistent Instructions</h2>
   <pre><code class="language-markdown"># ~/.claude/CLAUDE.md (global — every session reads this)
@@ -848,41 +864,98 @@ Always request it explicitly by key when fetching Jira issues.</code></pre>
   </aside>
 </section>
 
+<!-- 3.3: Skills — /update-jira as THE canonical example (consolidated) -->
 <section>
-  <h2>Skills — Encoded Workflows</h2>
-  <p style="font-size: 0.8em;">Skills are reusable multi-step recipes Claude follows exactly.</p>
-  <pre><code class="language-yaml"># ~/.claude/skills/update-jira/SKILL.md
+  <h2>Skills — Encoded Workflows<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
+  <p style="font-size: 0.78em;">Reusable multi-step recipes Claude follows exactly. Invoked with a slash command.</p>
+  <div class="two-col" style="margin-top: 0.5em;">
+    <div>
+      <h3 class="blue">The skill file</h3>
+      <pre style="font-size: 0.58em;"><code class="language-yaml"># ~/.claude/skills/update-jira/SKILL.md
 ---
 name: update-jira
-description: Update Jira ticket fields from GitHub PRs
+description: Update Jira fields from a PR
 ---
 Step 1: Resolve ticket ID from git branch
-Step 2: Fetch existing Jira ticket (4 custom fields)
-Step 3: Fetch PR data via `gh` CLI
+Step 2: Fetch existing Jira fields (4 custom fields)
+Step 3: Fetch PR data + Qodo review via `gh`
 Step 4: Backup original description as Jira comment
-Step 5: Synthesize updated Description + Technical Details + QA
+Step 5: Synthesize Description + Tech Details + QA
 Step 6: Update all 3 fields in one API call
-Step 7: Confirm with link to ticket</code></pre>
-  <p class="fragment" style="font-size: 0.8em; color: var(--accent);">
-    Invoked with: <code>/update-jira &lt;PR_URL&gt;</code> — fire and forget.
-  </p>
+Step 7: Return link to updated ticket</code></pre>
+    </div>
+    <div>
+      <h3 class="green">Invocation</h3>
+      <pre style="font-size: 0.7em;"><code class="language-text">/update-jira https://github.com/
+  winn-ai/slc/pull/297</code></pre>
+      <p style="font-size: 0.68em; margin-top: 0.6em;">
+        <span class="purple">Fire and forget.</span><br>
+        Type it, switch to another session —<br>
+        come back when it's done.
+      </p>
+      <p style="font-size: 0.62em; color: var(--accent3); margin-top: 0.6em;">
+        This is the <em>only</em> skill we'll walk through<br>
+        in detail. Later slides just name it.
+      </p>
+    </div>
+  </div>
   <aside class="notes">
-    Skills save context. This 7-step workflow would require a paragraph of explanation
-    every time. With a skill, it's one command. Perfect for parallel work — type the command
-    in one session, switch to another.
+    DEMO — /update-jira
+
+    SCREEN: laptop (Warp) + Jira browser tab on side screen
+    SETUP: On a branch with a linked Jira ticket and an open PR (see DEMO-PREP.md).
+    ACTIONS:
+      1. Type "/update-jira &lt;PR URL&gt;" in Claude.
+      2. While it runs, switch to a different Warp tab — show parallelism.
+      3. When done (notification), open the Jira ticket in the browser, show the 3 updated fields
+         and the backup comment.
+    KEY POINT: Skills save context AND attention. This 7-step workflow would need a paragraph of
+    explanation every time. With a skill it's one command — perfect for parallel work.
+
+    CONTEXT: This is the canonical /update-jira slide. Later sections (§6 CLI workflows, §8 Recipe)
+    reference it by name only — no re-explanation.
+  </aside>
+</section>
+
+<!-- 3.4: PostToolUse Hook -->
+<section>
+  <h2>PostToolUse Hook — Guardrails</h2>
+  <p style="font-size: 0.78em;">Encode a self-QA rule that fires on every edit, across every session.</p>
+  <pre><code class="language-json">{
+  "PostToolUse": [{
+    "matcher": "Edit|Write",
+    "hooks": [{
+      "type": "command",
+      "command": "echo '{\"hookSpecificOutput\": {
+        \"additionalContext\":
+          \"REMINDER: If the code change is not obvious,
+           add a concise inline comment explaining why.\"
+      }}'"
+    }]
+  }]
+}</code></pre>
+  <div class="highlight-box fragment" style="font-size: 0.85em;">
+    Fires after <strong>every</strong> Edit/Write — Claude self-documents its changes.<br>
+    <span class="purple">Your automated QA layer when you can't watch every session.</span>
+  </div>
+  <aside class="notes">
+    PostToolUse is another "encode it once" mechanism — like CLAUDE.md and skills, it lives in
+    config and applies to every session automatically. I use it for the comment-your-tricky-code
+    rule, but it's general — any rule that should fire after every edit belongs here.
   </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 3: NOTIFICATION PIPELINE                             -->
+<!-- SECTION 4: NEVER WATCH CLAUDE WORK                           -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">03</div>
+  <div class="section-num">04</div>
   <h2>Never Watch Claude Work</h2>
   <p class="subtitle">The notification pipeline</p>
 </section>
 
+<!-- 4.1: Hooks Architecture -->
 <section>
   <h2>Hooks Architecture</h2>
   <pre style="font-size: 0.55em; text-align: center;"><code class="language-text">
@@ -911,12 +984,13 @@ Step 7: Confirm with link to ticket</code></pre>
                        until title matches → lands on correct tab
   </code></pre>
   <aside class="notes">
-    Walk through this architecture diagram. The key insight is that clicking the notification
-    takes you to the EXACT tab where Claude was working. This is what makes parallel sessions
-    practical — you don't have to hunt for the right tab.
+    Walk through the architecture. Key insight: clicking the notification takes you to the EXACT
+    tab where Claude was working. This is what makes parallel sessions practical — you don't have
+    to hunt for the right tab.
   </aside>
 </section>
 
+<!-- 4.2: Hook Configuration -->
 <section>
   <h2>Hook Configuration</h2>
   <pre><code class="language-json">// ~/.claude/settings.json
@@ -944,6 +1018,7 @@ Step 7: Confirm with link to ticket</code></pre>
   </p>
 </section>
 
+<!-- 4.3: notify.sh -->
 <section>
   <h2>notify.sh — The Core</h2>
   <pre><code class="language-bash">#!/usr/bin/env bash
@@ -968,11 +1043,12 @@ case "$TERM_PROGRAM" in
     ;;
 esac</code></pre>
   <aside class="notes">
-    Walk through the key parts: reading the JSON payload, detecting the terminal,
-    capturing the tab title, and passing it to the focus script via temp file.
+    Walk through: reading the JSON payload, detecting the terminal, capturing the tab title,
+    passing it to the focus script via temp file.
   </aside>
 </section>
 
+<!-- 4.4: focus-warp-tab.sh -->
 <section>
   <h2>focus-warp-tab.sh</h2>
   <pre><code class="language-bash">#!/usr/bin/env bash
@@ -997,8 +1073,9 @@ done</code></pre>
   </div>
 </section>
 
+<!-- 4.5: The Signature Demo -->
 <section class="center-slide">
-  <h2>The Signature Demo<span class="demo-tag">live demo</span><span class="demo-tag phone-tag">phone</span></h2>
+  <h2>The Signature Demo<span class="demo-tag">live demo</span><span class="demo-tag phone-tag">phone</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <br>
   <div style="font-size: 0.85em; text-align: left; max-width: 600px; margin: 0 auto;">
     <div class="recipe-step"><div class="recipe-num">1</div><div>Start Claude on a task in <strong>Tab A</strong></div></div>
@@ -1009,47 +1086,37 @@ done</code></pre>
     <div class="recipe-step fragment"><div class="recipe-num">6</div><div>Review, approve, move on</div></div>
   </div>
   <aside class="notes">
-    THIS IS THE KEY DEMO. Start 3 Claude sessions in 3 different named Warp tabs.
-    Show the phone screen with the notification arriving.
-    Click the notification on laptop — Warp cycles to the right tab.
-    This is the "aha moment" for the audience.
+    DEMO — The Signature Moment
+
+    SCREEN: laptop (Warp, 3 named tabs) + phone (mirror to side screen)
+    SETUP: 3 Warp tabs pre-named per DEMO-PREP.md (WINN-1234 / WINN-1235 / WINN-1236).
+           Phone visible on side screen with notifications enabled.
+    ACTIONS:
+      1. In Tab A, paste a real task prompt; hit enter.
+      2. Switch to Tab B, paste a second task; hit enter.
+      3. Switch to Tab C, paste a third task; hit enter.
+      4. Wait. Narrate: "I'm now doing nothing."
+      5. When the phone notification arrives — point at it, then click the laptop notification.
+      6. Warp cycles tabs, lands on the exact completed session. React: "That's the moment."
+    KEY POINT: This is the aha moment. Parallel sessions only work if you can reliably return
+    to the right one without hunting. This is that.
+    FALLBACK: If notifications fail, switch to the dashboard (§7.3) to show the same info.
   </aside>
 </section>
 
-<section>
-  <h2>PostToolUse Hook — Guardrails</h2>
-  <pre><code class="language-json">{
-  "PostToolUse": [{
-    "matcher": "Edit|Write",
-    "hooks": [{
-      "type": "command",
-      "command": "echo '{\"hookSpecificOutput\": {
-        \"additionalContext\":
-          \"REMINDER: If the code change is not obvious,
-           add a concise inline comment explaining why.\"
-      }}'"
-    }]
-  }]
-}</code></pre>
-  <div class="highlight-box fragment" style="font-size: 0.85em;">
-    Fires after <strong>every</strong> Edit/Write — Claude self-documents its changes.<br>
-    <span class="purple">Your automated QA layer when you can't watch every session.</span>
-  </div>
-</section>
-
 <!-- ============================================================ -->
-<!-- SECTION 4: POWER TOOLS                                       -->
+<!-- SECTION 5: POWER TOOLS                                       -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">04</div>
+  <div class="section-num">05</div>
   <h2>Power Tools</h2>
-  <p class="subtitle">Plugins, MCP, Skills</p>
+  <p class="subtitle">LSP, MCP, and bots</p>
 </section>
 
-<!-- 4A: TypeScript LSP -->
+<!-- 5.1: TypeScript LSP -->
 <section>
-  <h2>TypeScript LSP Plugin<span class="demo-tag">live demo</span></h2>
+  <h2>TypeScript LSP Plugin<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div class="two-col">
     <div>
       <h3 class="red">Before</h3>
@@ -1079,14 +1146,22 @@ done</code></pre>
 }</code></pre>
   <p class="fragment small">Sessions don't get stuck on type errors → more autonomous → more parallelism</p>
   <aside class="notes">
-    DEMO: Have Claude make a change in a TypeScript file. Show the LSP catching a type error
-    and Claude fixing it without any intervention from you.
+    DEMO — TypeScript LSP
+
+    SCREEN: laptop (Warp, TypeScript project)
+    SETUP: A TS project with the LSP plugin enabled in settings.json.
+    ACTIONS:
+      1. Ask Claude to rename a widely-used interface property.
+      2. Show LSP diagnostics appearing in the transcript (Ctrl+O) as it edits.
+      3. Claude fixes all call sites autonomously — no tsc copy-paste.
+    KEY POINT: Sessions that type-check themselves don't stall waiting for you.
+    More autonomy → more parallelism.
   </aside>
 </section>
 
-<!-- 4B: MCP Servers -->
+<!-- 5.2: Local MCP Servers -->
 <section>
-  <h2>Local MCP Servers<span class="demo-tag">live demo</span></h2>
+  <h2>Local MCP Servers<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <p style="font-size: 0.8em;">MCP = Model Context Protocol. Give Claude access to external services.</p>
   <br>
   <table style="font-size: 0.7em;">
@@ -1121,11 +1196,20 @@ done</code></pre>
     <span class="purple">Self-sufficient sessions = more parallelism.</span>
   </div>
   <aside class="notes">
-    DEMO: Ask Claude "How many X this week?" and watch it query MongoDB directly.
-    The key point: Claude doesn't ask YOU for data — it looks it up.
+    DEMO — MongoDB MCP
+
+    SCREEN: laptop (Warp)
+    SETUP: MongoDB MCP configured (see next slide).
+    ACTIONS:
+      1. Ask Claude: "How many X were created this week?"
+      2. Watch it issue an aggregate query via the MCP tool.
+      3. Show the answer inline — no copy-paste.
+    KEY POINT: Claude doesn't ask YOU for data — it looks it up. This is the difference between
+    a session that blocks on you and one that finishes on its own.
   </aside>
 </section>
 
+<!-- 5.3: MCP MongoDB via 1Password -->
 <section>
   <h2>MCP: MongoDB via 1Password</h2>
   <pre><code class="language-json">// ~/.claude/mcp.json
@@ -1146,30 +1230,40 @@ done</code></pre>
   </div>
 </section>
 
-<!-- 4C: update-jira skill -->
+<!-- 5.4: MCP Claude in Chrome (moved from old §7) -->
 <section>
-  <h2>Skill: /update-jira<span class="demo-tag">live demo</span></h2>
-  <div style="font-size: 0.75em;">
-    <pre><code class="language-text">/update-jira https://github.com/winn-ai/slc/pull/297</code></pre>
-  </div>
+  <h2>MCP: Claude in Chrome<span class="demo-tag">live demo</span><span class="demo-tag chrome-tag">chrome</span></h2>
+  <p style="font-size: 0.8em;">The <code>claude-in-chrome</code> MCP gives Claude eyes into your browser.</p>
   <br>
-  <div style="font-size: 0.75em;">
-    <div class="recipe-step"><div class="recipe-num">1</div><div>Auto-detect Jira ticket from git branch name</div></div>
-    <div class="recipe-step"><div class="recipe-num">2</div><div>Fetch existing ticket fields via Atlassian MCP</div></div>
-    <div class="recipe-step"><div class="recipe-num">3</div><div>Fetch PR data + Qodo review summary via <code>gh</code></div></div>
-    <div class="recipe-step"><div class="recipe-num">4</div><div>Backup original description as Jira comment</div></div>
-    <div class="recipe-step"><div class="recipe-num">5</div><div>Synthesize updated Description + Technical Details + QA</div></div>
-    <div class="recipe-step"><div class="recipe-num">6</div><div>Update all 3 fields in one API call</div></div>
-    <div class="recipe-step"><div class="recipe-num">7</div><div>Return link to updated ticket</div></div>
-  </div>
-  <p class="fragment small purple">Fire and forget — type the command, switch to another session.</p>
+  <table style="font-size: 0.7em;">
+    <thead>
+      <tr><th>Tool</th><th>What It Does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>tabs_context</code></td><td>See all open browser tabs</td></tr>
+      <tr><td><code>read_page</code></td><td>Read full page content / DOM</td></tr>
+      <tr><td><code>read_console_messages</code></td><td>Read JavaScript console output</td></tr>
+      <tr><td><code>read_network_requests</code></td><td>See failed API calls, status codes</td></tr>
+      <tr><td><code>javascript_tool</code></td><td>Execute JS in the page context</td></tr>
+    </tbody>
+  </table>
+  <br>
+  <pre class="fragment"><code class="language-text">"Check the console errors in Chrome
+ and fix the issue in the code."</code></pre>
   <aside class="notes">
-    DEMO: Run /update-jira on a real PR. Show the Jira ticket updating.
-    This is a perfect parallel task — one command, switch away, come back when done.
+    DEMO — Claude in Chrome
+
+    SCREEN: chrome (staging app with known bug) + laptop (Warp)
+    SETUP: Chrome open on a staging page that throws a specific console error.
+    ACTIONS:
+      1. In Warp, paste: "Check the console errors in the active Chrome tab and fix the issue in the code."
+      2. Watch Claude call read_console_messages, locate the source, fix the file, commit.
+    KEY POINT: Claude reads console + network itself — no copy-paste from DevTools.
+    The browser becomes just another MCP surface.
   </aside>
 </section>
 
-<!-- 4D: prompting qodo -->
+<!-- 5.5: Qodo -->
 <section>
   <h2>Prompting Qodo in PR Comments</h2>
   <div style="font-size: 0.75em;">
@@ -1186,20 +1280,22 @@ done</code></pre>
   <p class="fragment small purple">Drop a comment, walk away, come back to feedback — another parallel lane.</p>
   <aside class="notes">
     Qodo runs as a PR bot. These three commands are the ones worth knowing.
-    /review is fast and cheap; /agentic_review is slower but catches more; /ask is great for onboarding yourself to someone else's PR.
+    /review is fast and cheap; /agentic_review is slower but catches more; /ask is great for
+    onboarding yourself to someone else's PR.
   </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 5: CLI-FIRST                                         -->
+<!-- SECTION 6: CLI-FIRST WORKFLOWS                               -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">05</div>
+  <div class="section-num">06</div>
   <h2>CLI-First Workflows</h2>
   <p class="subtitle">The fastest path is always a CLI</p>
 </section>
 
+<!-- 6.1: Always Prefer CLI -->
 <section>
   <h2>Always Prefer CLI</h2>
   <div class="two-col" style="font-size: 0.8em;">
@@ -1232,8 +1328,9 @@ gh pr diff 297
   </div>
 </section>
 
+<!-- 6.2: Fix PR Review Comments -->
 <section>
-  <h2>Fix PR Review Comments<span class="demo-tag">live demo</span></h2>
+  <h2>Fix PR Review Comments<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div class="highlight-box" style="text-align: center; font-size: 1.1em;">
     <code>"Fix PR 297 review feedback"</code>
   </div>
@@ -1248,14 +1345,26 @@ gh pr diff 297
       <li>Commits with meaningful message</li>
     </ul>
   </div>
+  <p class="small fragment" style="text-align: center; margin-top: 1em;">
+    Close the loop with <code>/update-jira</code> — the skill we saw in §3.3.
+  </p>
   <aside class="notes">
-    DEMO: Take a real PR with 2-3 review comments.
-    Paste the URL, watch Claude read and fix all comments.
+    DEMO — Fix PR Review Comments
+
+    SCREEN: laptop (Warp)
+    SETUP: Real PR with 2-3 review comments (see DEMO-PREP.md).
+    ACTIONS:
+      1. Paste: "Fix PR &lt;number&gt; review feedback &lt;URL&gt;"
+      2. Watch Claude call gh pr view, read comments, edit files, commit.
+      3. Optionally chain with /update-jira to sync the ticket (skill from §3.3).
+    KEY POINT: Single URL in → fixes out. No copy-paste. The whole loop (review → fix → ticket)
+    is now one command chain — with §3.3's /update-jira closing it.
   </aside>
 </section>
 
+<!-- 6.3: Fix Failed CI Actions -->
 <section>
-  <h2>Fix Failed CI Actions<span class="demo-tag">live demo</span></h2>
+  <h2>Fix Failed CI Actions<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <pre><code class="language-text">"Fix the failed action:
  https://github.com/winn-ai/slc/actions/runs/123456"</code></pre>
   <br>
@@ -1267,20 +1376,32 @@ gh pr diff 297
     Open 5 Claude sessions. Paste one URL in each.<br>
     Come back when notifications arrive.
   </div>
+  <aside class="notes">
+    DEMO — Fix Failed CI
+
+    SCREEN: laptop (Warp)
+    SETUP: Failed GitHub Actions run URL (see DEMO-PREP.md).
+    ACTIONS:
+      1. Paste the run URL with "Fix the failed action: &lt;URL&gt;".
+      2. Watch Claude call gh run view --log-failed, read the error, edit the file, push.
+    KEY POINT: Same one-URL-in pattern as the previous slide. This is the shape of a CLI-first
+    workflow — and why parallelism (§7) actually pays off.
+  </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 6: GIT WORKTREES                                     -->
+<!-- SECTION 7: PARALLEL MASTERY                                  -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">06</div>
-  <h2>Git Worktrees</h2>
-  <p class="subtitle">The parallel multiplier</p>
+  <div class="section-num">07</div>
+  <h2>Parallel Mastery</h2>
+  <p class="subtitle">The payoff — everything so far was for this</p>
 </section>
 
+<!-- 7.1: Worktrees -->
 <section>
-  <h2>The Problem with Parallel Sessions</h2>
+  <h2>Git Worktrees<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div class="highlight-box" style="border-color: #ef4444; text-align: center;">
     2 Claude sessions on the same repo = conflict<br>
     <span class="small">Both editing the same files, same working tree, git fights</span>
@@ -1299,97 +1420,30 @@ git worktree add ../my-repo-new-api  WINN-1235-new-api</code></pre>
            │
            └── All share the same .git (no duplication)
   </code></pre>
-</section>
-
-<section>
-  <h2>Worktree + Claude Workflow<span class="demo-tag">live demo</span></h2>
-  <div style="font-size: 0.8em;">
-    <div class="recipe-step"><div class="recipe-num">1</div><div>Run <code>git-report.sh</code> to see all repos + worktrees</div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">2</div><div><code>git worktree add ../repo-fix WINN-1234</code></div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">3</div><div>Open new Warp tab → <code>cd ../repo-fix</code> → start Claude</div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">4</div><div>Switch to main repo tab → start different Claude task</div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">5</div><div>Both run simultaneously, zero conflicts</div></div>
-  </div>
-  <div class="highlight-box fragment" style="font-size: 0.85em;">
-    <strong>Maintaining order:</strong><br>
-    Branch name = Jira ticket = Warp tab name = session purpose<br>
-    <span class="small">The dashboard shows all active sessions at a glance.</span>
+  <div class="highlight-box fragment" style="font-size: 0.8em; margin-top: 12px;">
+    <strong>Maintaining order:</strong>
+    Branch name = Jira ticket = Warp tab name = session purpose.
   </div>
   <aside class="notes">
-    DEMO: Show git-report.sh output. Create a worktree. Start Claude in both.
-    Show them running in parallel with no conflicts.
+    DEMO — Worktrees
+
+    SCREEN: laptop (Warp)
+    SETUP: A repo with pre-created worktrees (see DEMO-PREP.md — `git worktree list` should show them).
+    ACTIONS:
+      1. Run git-report.sh to show all repos + worktrees at a glance.
+      2. Create one more worktree live: git worktree add ../repo-demo WINN-1234.
+      3. Open a new Warp tab, cd into it, start Claude.
+      4. Switch to the main repo tab, start a different Claude task.
+      5. Narrate: "Same repo. Two sessions. Zero conflicts. Shared .git."
+    KEY POINT: Worktrees are the mechanical enabler for parallelism on the same repo. Combine
+    with the naming convention (branch = ticket = tab) so the dashboard and notifications stay
+    coherent.
   </aside>
 </section>
 
-<!-- ============================================================ -->
-<!-- SECTION 7: ADVANCED                                          -->
-<!-- ============================================================ -->
-
-<section class="section-divider center-slide">
-  <div class="section-num">07</div>
-  <h2>Advanced</h2>
-  <p class="subtitle">Remote control &amp; browser debugging</p>
-</section>
-
+<!-- 7.2: Dashboard -->
 <section>
-  <h2>Claude Remote Control<span class="demo-tag">live demo</span></h2>
-  <div class="highlight-box" style="font-size: 0.9em;">
-    Send prompts to running Claude sessions from another context.
-  </div>
-  <br>
-  <div style="font-size: 0.8em;">
-    <p><strong>Use cases:</strong></p>
-    <ul>
-      <li>On your phone, see a Slack message about a bug →<br>
-          trigger a Claude session on your laptop to investigate</li>
-      <li>Kick off a task from a script or cron job</li>
-      <li>Chain sessions: one finishes, triggers the next</li>
-    </ul>
-  </div>
-  <aside class="notes">
-    DEMO: Show triggering a Claude session remotely.
-    This is about not needing to be at your laptop to start work.
-  </aside>
-</section>
-
-<section>
-  <h2>Claude in Chrome<span class="demo-tag">live demo</span></h2>
-  <p style="font-size: 0.8em;">The <code>claude-in-chrome</code> MCP gives Claude eyes into your browser.</p>
-  <br>
-  <table style="font-size: 0.7em;">
-    <thead>
-      <tr><th>Tool</th><th>What It Does</th></tr>
-    </thead>
-    <tbody>
-      <tr><td><code>tabs_context</code></td><td>See all open browser tabs</td></tr>
-      <tr><td><code>read_page</code></td><td>Read full page content / DOM</td></tr>
-      <tr><td><code>read_console_messages</code></td><td>Read JavaScript console output</td></tr>
-      <tr><td><code>read_network_requests</code></td><td>See failed API calls, status codes</td></tr>
-      <tr><td><code>javascript_tool</code></td><td>Execute JS in the page context</td></tr>
-    </tbody>
-  </table>
-  <br>
-  <pre class="fragment"><code class="language-text">"Check the console errors in Chrome
- and fix the issue in the code."</code></pre>
-  <aside class="notes">
-    DEMO: Have a staging app open with a known bug.
-    Tell Claude to check Chrome console and fix it.
-    Claude reads the console, traces to code, fixes — all without you copy-pasting.
-  </aside>
-</section>
-
-<!-- ============================================================ -->
-<!-- SECTION 8: COMMAND CENTER                                    -->
-<!-- ============================================================ -->
-
-<section class="section-divider center-slide">
-  <div class="section-num">08</div>
-  <h2>Your Command Center</h2>
-  <p class="subtitle">Dashboard &amp; utility scripts</p>
-</section>
-
-<section>
-  <h2>Claude Sessions Dashboard<span class="demo-tag">live demo</span></h2>
+  <h2>Claude Sessions Dashboard<span class="demo-tag">live demo</span><span class="demo-tag dashboard-tag">dashboard</span></h2>
   <div class="two-col" style="font-size: 0.75em;">
     <div>
       <h3>Features</h3>
@@ -1419,14 +1473,23 @@ Python HTTP Server
     Air traffic control for parallel Claude sessions.
   </div>
   <aside class="notes">
-    DEMO: Show the running dashboard with multiple active sessions.
-    Point out status indicators, waiting vs. active sessions.
-    Show that you can see what each session is doing without switching tabs.
+    DEMO — Dashboard
+
+    SCREEN: dashboard (browser tab)
+    SETUP: Dashboard running (python3 ~/scripts/claude-dashboard/server/claude_dashboard.py),
+           with the 3 signature-demo sessions still live from §4.5.
+    ACTIONS:
+      1. Switch to the dashboard tab.
+      2. Point out status indicators (thinking / waiting / idle) for each session.
+      3. Click into one session, show per-session notes + Claude todos.
+      4. Click focus/resume, land on the right Warp tab.
+    KEY POINT: When running 5+ sessions, you need a bird's-eye view. This is it.
   </aside>
 </section>
 
+<!-- 7.3: Utility Scripts -->
 <section>
-  <h2>Utility Scripts<span class="demo-tag">live demo</span></h2>
+  <h2>Utility Scripts<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div style="font-size: 0.75em;">
     <div class="highlight-box" style="border-color: var(--accent3);">
       <strong><code>git-report.sh</code></strong> — Multi-repo status at a glance<br>
@@ -1446,18 +1509,55 @@ Python HTTP Server
 alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
   /contents/scripts/deploy-pr.sh --jq ".content" | base64 -d)'</code></pre>
   <aside class="notes">
-    DEMO: Run git-report.sh and show the table output.
-    Highlight worktree entries and branch status.
-    Briefly show deploy-pr.sh alias setup.
+    DEMO — Utility Scripts
+
+    SCREEN: laptop (Warp)
+    SETUP: git-report.sh and deploy-pr alias installed.
+    ACTIONS:
+      1. Run git-report.sh — show the multi-repo table, point at worktree entries.
+      2. Show the deploy-pr one-liner alias definition.
+      3. (Skip an actual deploy unless you have time budget.)
+    KEY POINT: These scripts collapse the overhead of managing many repos in parallel.
+    They're what makes the "5 sessions, 5 tabs, 5 repos" workflow not collapse under its own weight.
+  </aside>
+</section>
+
+<!-- 7.4: Remote Control (moved from old §7 Advanced) -->
+<section>
+  <h2>Claude Remote Control<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span><span class="demo-tag phone-tag">phone</span></h2>
+  <div class="highlight-box" style="font-size: 0.9em;">
+    Send prompts to running Claude sessions from another context.
+  </div>
+  <br>
+  <div style="font-size: 0.8em;">
+    <p><strong>Use cases:</strong></p>
+    <ul>
+      <li>On your phone, see a Slack message about a bug →<br>
+          trigger a Claude session on your laptop to investigate</li>
+      <li>Kick off a task from a script or cron job</li>
+      <li>Chain sessions: one finishes, triggers the next</li>
+    </ul>
+  </div>
+  <aside class="notes">
+    DEMO — Remote Control
+
+    SCREEN: phone (trigger) + laptop (Warp receives)
+    SETUP: Phone configured to trigger remote prompts to your laptop's Claude.
+    ACTIONS:
+      1. From phone, trigger a prompt targeting a specific Warp session.
+      2. Watch it arrive on the laptop and start executing.
+    KEY POINT: Remote control closes the loop — you don't need to be at the laptop to start work
+    in your fleet. Combined with the notification pipeline (§4), the laptop becomes a worker
+    you conduct from anywhere.
   </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 9: CLOSING                                           -->
+<!-- SECTION 8: CLOSING                                           -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">09</div>
+  <div class="section-num">08</div>
   <h2>Putting It All Together</h2>
   <p class="subtitle">The daily parallel workflow</p>
 </section>

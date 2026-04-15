@@ -24,30 +24,37 @@ Developers already use Claude Code, but one session at a time. This talk shows t
 
 ### Topics Covered (in section order)
 
-1. **Where to run Claude Code** — Warp (best for parallel, native notifications, tab scripting), VS Code Extension (best for single-task), Web (best for background/long tasks), iTerm2/Terminal.app tradeoffs
-2. **Keyboard shortcuts** — `Esc` (cancel), `Ctrl+G` (external editor), `Ctrl+O` (transcript viewer), `Ctrl+T` (todos), `Shift+Tab` (cycle mode), `⌥P` (model picker), `⌥O` (fast mode), `Ctrl+B` (background task). Press `?` for full reference.
-3. **Plan mode** — `"defaultMode": "plan"` in settings.json makes Claude wait for approval before editing — the safety net for parallel sessions
-4. **Updating Claude's config** — when Claude doesn't follow instructions more than once, update `~/.claude/settings.json` or `~/.claude/CLAUDE.md` instead of repeating yourself
-5. **File references** — `@filename` sends entire file (wasteful); prefer "read lines 40-80 of src/foo.ts" for surgical context use
-6. **Context window** — short focused parallel sessions beat one mega-session hitting context limits. Reference: https://code.claude.com/docs/en/context-window
-7. **"Interview me" pattern** — tell Claude to interview you before coding or before proposing workarounds
-8. **CLAUDE.md and Skills** — persistent instructions (global + per-project) and skills encode multi-step workflows so sessions are self-sufficient with zero re-explaining
-9. **Hooks & notifications** — `notify.sh` + `focus-warp-tab.sh`: clicking a macOS notification lands you on the exact Warp tab where Claude finished. Hooks config: `~/.claude/settings.json`. The PostToolUse hook guards code quality when you can't watch every session.
-10. **TypeScript LSP plugin** — Claude checks types as it goes; sessions don't stall on type errors asking for your help
-11. **Local MCP servers** — MongoDB (via 1Password `op://`), Google Sheets, Gmail, Claude-in-Chrome. Self-sufficient sessions query their own data.
-12. **`/update-jira` skill** — auto-detect ticket from branch → fetch PR via `gh` → Qodo review → backup + update 3 Jira fields. Fire and forget.
-13. **CLI-first** — `gh` for GitHub (PRs, issues, checks, CI logs), `gcloud`, `op`. CLIs are scriptable; browsers require copy-paste. Enforce in CLAUDE.md.
-14. **Fix PR review comments** — paste PR URL, Claude reads via `gh pr view`, fixes all review comments
-15. **Fix failed CI** — paste Actions run URL, Claude reads via `gh run view --log-failed`, fixes the failure
-16. **Git worktrees** — `git worktree add ../repo-feature branch` gives each session its own working tree with shared `.git`. No conflicts between parallel Claude sessions on the same repo.
-17. **Maintaining order** — branch name = Jira ticket = Warp tab name = session purpose. `git-report.sh` gives bird's-eye view. Dashboard shows live session status.
-18. **Claude remote control** — trigger and send prompts to running sessions from another context (phone → laptop)
-19. **Claude in Chrome** — `claude-in-chrome` MCP: read console errors, network requests, page content. Claude debugs without you copy-pasting browser output.
-20. **Dashboard app** (`~/scripts/claude-dashboard`) — React 19 + Python SSE + watchdog. Real-time view of all active sessions, status (thinking/waiting/idle), per-session notes, Claude todos. Air traffic control for parallel work.
-21. **Utility scripts** (from `winn-ai/manual-actions`):
-    - `git-report.sh` — multi-repo status: branch, dirty, stash, worktree detection, origin sync
-    - `git-reset-repos.sh` — interactive fzf multi-select stash+pull or conditional-pull
-    - `deploy-pr.sh` — one-command PR deploy: auto-detect repo, monitor CI, fetch image, k8s rollout, Slack notify
+The deck has **9 sections** (Section 0 opener + §1–§8). Each section below maps to one `<!-- SECTION N: ... -->` block in `index.html`.
+
+**§0 Opening Hook** — title, "The Problem" (one session at a time), roadmap.
+
+**§1 Setup & Foundations** *(intentionally deep — see note below)* — where to run (Warp/Terminal.app/VSCode/iTerm tradeoffs), the "1 Claude = 1 project root" rule, systems that silently fail under wrong CWD (CLAUDE.md, settings.json, .mcp.json, skills, auto-memory, Glob scope, git, Bash blast radius), the VSCode parent-folder trap and fixes, multi-repo with `--add-dir` (anchor primary + extend scope), picking the primary + orienting Claude, cross-repo guardrails, when *not* to go multi-repo + umbrella folder pattern, keyboard shortcuts (`Esc`, `Ctrl+G`, `Ctrl+O`, `Ctrl+T`, `Shift+Tab`, `⌥P`, `⌥O`, `Ctrl+B`), plan mode as default.
+
+**§2 Efficiency & Focus** *(prerequisite for parallelism — must come before §7)* — `@filename` vs line-range file references, how the VSCode extension sends a lightweight pointer (not the full file), token economics (usage limits, attention dilution, forced compaction, cache busting, stall risk), context window visualizer (`docs.anthropic.com/en/docs/claude-code/context-window`), "interview me" pattern for both specs and avoiding workarounds.
+
+**§3 Encoding Knowledge** *(write it down once — every session already knows)* — updating Claude's settings (`~/.claude/settings.json`, `~/.claude/CLAUDE.md`, `.claude/settings.json`, `/update-config`), global + project CLAUDE.md with real examples (gh enforcement, Jira field IDs), Skills as multi-step recipes with **`/update-jira` as THE canonical example** — 7-step breakdown shown in §3.3 and **nowhere else** in the deck, PostToolUse hook for automated self-QA.
+
+**§4 Never Watch Claude Work** — hooks architecture (Stop / Notification → `notify.sh` → `terminal-notifier` → `focus-warp-tab.sh`), hook config, `notify.sh` internals, `focus-warp-tab.sh`, the **signature demo**: 3 Warp tabs, phone notification, click → lands on right tab.
+
+**§5 Power Tools** — TypeScript LSP plugin (sessions that type-check themselves don't stall), local MCP servers (MongoDB, Google Sheets, Gmail, Claude-in-Chrome), MongoDB via 1Password `op://`, Claude-in-Chrome MCP (read page/console/network), Qodo PR bot (`/review`, `/agentic_review`, `/ask`).
+
+**§6 CLI-First Workflows** — enforce "always use `gh`" in CLAUDE.md, fix PR review comments from a URL (`gh pr view`), fix failed CI from an Actions run URL (`gh run view --log-failed`). `/update-jira` closes the loop — **named, not re-explained** (it's fully covered in §3.3).
+
+**§7 Parallel Mastery** *(the payoff — everything before sets this up)* — git worktrees (separate checkout, shared `.git`; branch name = Jira ticket = Warp tab name), Claude Sessions Dashboard (`~/scripts/claude-dashboard`, React 19 + Python SSE + watchdog), utility scripts (`git-report.sh`, `git-reset-repos.sh`, `deploy-pr.sh`), Claude remote control (trigger sessions from phone/script/cron).
+
+**§8 Closing** — the daily parallel recipe (9 steps), before/after (3 PRs/day → 10+), Q&A.
+
+### Why §1 is long (intentional — do not compress further without explicit permission)
+
+The CWD / VSCode-parent-folder / cross-repo material in §1 is **intentionally ~11 slides deep**. This is a contested topic in the audience: many devs default to launching Claude from a parent folder in VSCode out of habit. The lecture uses this section to argue that working correctly with Claude matters — and specifically that a real terminal (**Warp** or iTerm2) is the better default for parallel work.
+
+Load-bearing slides in the argument:
+- **§1.3 "Why This Matters"** — explicit runway framing the deep-dive as contested territory
+- **§1.4 "Everything Keys Off the Working Directory"** — the authoritative table enumerating every system that silently fails under wrong CWD (merged from two near-identical tables in the old deck)
+- **§1.5 "The VSCode Parent-Folder Trap"** — carries the Warp-as-better-default pitch ("VSCode as viewer, Warp for Claude — scales best to many parallel sessions")
+- **§1.6 "The Silent Failure Mode"** — symptoms the audience will recognize from their own experience
+
+Do not trim this section further. Merge near-duplicate content where genuinely redundant, but preserve the argument's depth.
 
 ### Demo Prep
 
@@ -57,7 +64,7 @@ See `DEMO-PREP.md` for the full pre-lecture checklist and a demo-to-screen mappi
 
 The deck is a single `index.html`. Sections are delimited by HTML comments (`<!-- SECTION N: ... -->`). Each section has a numbered divider slide followed by content slides. Speaker notes are in `<aside class="notes">` tags — press `S` in the browser to open presenter view.
 
-Section numbers match the topics list above (Section 1 = Foundations, ..., Section 9 = Closing recipe).
+Section numbers match the topics list above: §1 Setup & Foundations, §2 Efficiency & Focus, §3 Encoding Knowledge, §4 Never Watch Claude Work, §5 Power Tools, §6 CLI-First Workflows, §7 Parallel Mastery, §8 Closing.
 
 ## Key External Files Referenced in the Lecture
 
