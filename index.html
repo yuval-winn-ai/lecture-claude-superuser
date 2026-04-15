@@ -267,6 +267,274 @@ code ~/work     ← opens parent</code></pre>
   </aside>
 </section>
 
+<!-- 1A3b: What Actually Breaks in parent-folder mode -->
+<section>
+  <h2>What Actually Breaks<span class="demo-tag">parent-folder mode</span></h2>
+  <table style="font-size: 0.55em;">
+    <thead>
+      <tr><th>System</th><th>Correct CWD</th><th>Parent-folder CWD</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CLAUDE.md</code></td>
+        <td class="green">Project rules loaded<br>(gh CLI, Jira field IDs…)</td>
+        <td class="red">Ignored — Claude has no project context</td>
+      </tr>
+      <tr>
+        <td><code>.claude/settings.json</code></td>
+        <td class="green">Plan mode, permissions, hooks apply</td>
+        <td class="red">Project defaults silently discarded</td>
+      </tr>
+      <tr>
+        <td><code>.mcp.json</code></td>
+        <td class="green">Project MCP servers available</td>
+        <td class="red">Claude can't reach the project's DB/API</td>
+      </tr>
+      <tr>
+        <td>Skills &amp; subagents</td>
+        <td class="green"><code>/update-jira</code>, project subagents work</td>
+        <td class="red">Commands return "skill not found"</td>
+      </tr>
+      <tr>
+        <td>Auto-memory</td>
+        <td class="green">Keyed to project path — past sessions recalled</td>
+        <td class="red">Parent namespace — fresh amnesia each time</td>
+      </tr>
+      <tr>
+        <td>Glob / Grep / Read</td>
+        <td class="green">Scoped to project</td>
+        <td class="orange">Scans all 20 repos — pollutes context</td>
+      </tr>
+      <tr>
+        <td><code>git</code> / <code>gh</code></td>
+        <td class="green">Right repo by default</td>
+        <td class="red">"Not a git repo" — or worse, wrong one</td>
+      </tr>
+      <tr>
+        <td>Bash blast radius</td>
+        <td class="green">Scoped to project tree</td>
+        <td class="red"><code>rm</code>, <code>find -delete</code> can reach siblings</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Walk through each row. Make MCP vivid — the session can't reach MongoDB because .mcp.json didn't load.
+    Memory too — a session that "remembers" in the right CWD writes to an orphan namespace in the parent.
+    The git row is the one that bites fastest: gh pr view fails, and nobody thinks to check CWD.
+  </aside>
+</section>
+
+<!-- 1A3c: Silent Failure Mode -->
+<section>
+  <h2>The Silent Failure Mode</h2>
+  <div class="highlight-box" style="border-color: #ef4444; font-size: 0.9em;">
+    <strong>Claude won't warn you.</strong><br>
+    Nothing says "your CLAUDE.md wasn't loaded" or "this MCP server is missing."
+  </div>
+  <br>
+  <div class="two-col">
+    <div>
+      <h3 class="red">How this looks in practice</h3>
+      <ul style="font-size: 0.7em;">
+        <li>Claude uses <code>curl</code> when your CLAUDE.md said "always use <code>gh</code>"</li>
+        <li>Claude asks questions already answered by a project skill</li>
+        <li>Claude can't find files that exist in the repo (wrong glob root)</li>
+        <li><code>/update-jira</code> returns "unknown skill"</li>
+        <li>Past-session memory mysteriously missing</li>
+        <li>You keep repeating yourself — and wonder why</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="green">How to verify CWD</h3>
+      <ul style="font-size: 0.72em;">
+        <li>First turn: <strong>"What's your CWD? Which <code>CLAUDE.md</code> files loaded?"</strong></li>
+        <li>Status line — show CWD in your config</li>
+        <li><code>/status</code> command</li>
+        <li>Check the working-directory line in the system prompt (<code>Ctrl+O</code> transcript)</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+    This is the most dangerous property. No error. No warning. Just quiet degradation and you
+    repeating instructions you thought were baked in. Train the audience: at the start of any
+    real work, ask Claude what its CWD is and what CLAUDE.md files loaded. Make this a reflex.
+  </aside>
+</section>
+
+<!-- 1A4: Cross-Repo — When a Session Spans Multiple Projects -->
+<section>
+  <h2>When a Session <em>Spans</em> Multiple Projects</h2>
+  <p style="font-size: 0.82em;">
+    Real example: change a backend API → update the frontend client → bump the shared types package.
+  </p>
+  <div class="highlight-box" style="font-size: 0.88em;">
+    The "1 Claude = 1 project root" rule needs a <strong>deliberate exception</strong>.<br>
+    Not "launch from the parent" — <span class="green">anchor + extend</span>.
+  </div>
+  <br>
+  <div class="two-col">
+    <div>
+      <h3 class="red">Wrong</h3>
+      <pre><code class="language-bash">cd ~/work         # parent
+claude            # CWD = ~/work
+# lose everything from slide 1A3b</code></pre>
+    </div>
+    <div>
+      <h3 class="green">Right</h3>
+      <pre><code class="language-bash">cd ~/work/backend     # primary
+claude \
+  --add-dir ../frontend \
+  --add-dir ../shared-types</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Microservices setups hit this constantly. Temptation: launch from parent. Resist.
+    Next slide shows the right shape — pin CWD to one project, grant explicit access to peers.
+  </aside>
+</section>
+
+<!-- 1A5: --add-dir Recipe -->
+<section>
+  <h2><code>--add-dir</code> — Anchor Primary, Extend Scope</h2>
+  <p style="font-size: 0.8em;">CWD stays anchored to the primary; peers are explicitly granted.</p>
+  <div class="two-col">
+    <div>
+      <h3 class="blue">One-shot flag</h3>
+      <pre><code class="language-bash">cd ~/work/backend
+claude \
+  --add-dir ../frontend \
+  --add-dir ../shared-types</code></pre>
+    </div>
+    <div>
+      <h3 class="blue">Persistent (per-project)</h3>
+      <pre><code class="language-json">// backend/.claude/settings.json
+{
+  "additionalDirectories": [
+    "../frontend",
+    "../shared-types"
+  ]
+}</code></pre>
+    </div>
+  </div>
+  <div class="highlight-box" style="font-size: 0.78em; margin-top: 12px;">
+    <strong class="green">What stays correct:</strong>
+    primary's <code>CLAUDE.md</code>, <code>.mcp.json</code>, skills, memory namespace, git context.<br>
+    <strong class="green">What's bounded:</strong>
+    Glob / Grep / Read / Bash see only listed dirs — not the 20-repo parent.
+  </div>
+  <aside class="notes">
+    Mental model: you're not moving CWD up, you're adding peer dirs to scope. Primary's config
+    continues to apply. Peers are read/write accessible but aren't treated as projects themselves.
+    You'll see this in my live setup — the main project has claude-dashboard as an additional dir.
+  </aside>
+</section>
+
+<!-- 1A6: Picking the Primary + Orientation -->
+<section>
+  <h2>Picking the Primary + Orienting Claude</h2>
+  <div class="two-col">
+    <div>
+      <h3 class="purple">Which repo is "primary"?</h3>
+      <ol style="font-size: 0.72em;">
+        <li>Where the <strong>change originates</strong><br>
+          <span style="color: var(--accent3);">(defines the API, the types, the contract)</span></li>
+        <li>Richest <code>.claude/</code> config<br>
+          <span style="color: var(--accent3);">(you want its CLAUDE.md + skills loaded)</span></li>
+        <li>Where <strong>most edits</strong> will land</li>
+      </ol>
+    </div>
+    <div>
+      <h3 class="green">Orient Claude up front</h3>
+      <p style="font-size: 0.7em;">Claude doesn't auto-load CLAUDE.md from added dirs — point at them.</p>
+      <pre style="font-size: 0.62em;"><code class="language-text">We're working across 3 repos:
+  backend (CWD) — defines the API
+  frontend — consumes it
+  shared-types — the contract
+
+Read ../frontend/CLAUDE.md and
+../shared-types/CLAUDE.md before
+making any changes.</code></pre>
+    </div>
+  </div>
+  <aside class="notes">
+    Two decisions: which repo is primary, and how you brief Claude about the others.
+    Orientation matters — Claude will happily edit frontend without ever reading its CLAUDE.md
+    unless you tell it to. If you do cross-repo work often, save this orientation as a skill
+    (e.g. /cross-repo-orient) instead of retyping.
+  </aside>
+</section>
+
+<!-- 1A7: Cross-Repo Guardrails -->
+<section>
+  <h2>Cross-Repo Guardrails</h2>
+  <p style="font-size: 0.78em;">Multi-repo sessions are the highest-blast-radius work. Tighten the controls.</p>
+  <table style="font-size: 0.64em;">
+    <tbody>
+      <tr>
+        <td style="width: 26%;"><strong class="purple">Plan mode</strong></td>
+        <td>Non-negotiable. Let Claude write the cross-repo plan first, review it, approve.</td>
+      </tr>
+      <tr>
+        <td><strong class="purple">Budget context</strong></td>
+        <td>Each peer repo expands Glob/Grep scope. Tell Claude which files matter — line ranges over <code>@file</code>.</td>
+      </tr>
+      <tr>
+        <td><strong class="purple">One branch name</strong></td>
+        <td>Mirror the Jira ticket / branch name across all repos so the change set is discoverable.</td>
+      </tr>
+      <tr>
+        <td><strong class="purple">Explicit git paths</strong></td>
+        <td>For peers, <code>git -C ../frontend …</code> — or let Claude resolve paths (it will).</td>
+      </tr>
+      <tr>
+        <td><strong class="purple">Watch more, not less</strong></td>
+        <td>Fewer concurrent sessions, tighter supervision. These earn <em>less</em> autonomy than single-repo work.</td>
+      </tr>
+      <tr>
+        <td><strong class="purple">One PR per repo</strong></td>
+        <td>Draft PRs in each repo with cross-links — reviewable atomically, same branch name everywhere.</td>
+      </tr>
+    </tbody>
+  </table>
+  <aside class="notes">
+    Theme: cross-repo sessions earn less autonomy, not more. Plan mode gate, explicit context hints,
+    closer supervision. Also the strongest case against parallelism — don't try to run 3 cross-repo
+    sessions at once.
+  </aside>
+</section>
+
+<!-- 1A8: When NOT to Go Multi-Repo + Umbrella Pattern -->
+<section>
+  <h2>When <em>Not</em> to Go Multi-Repo</h2>
+  <div class="two-col">
+    <div>
+      <h3 class="red">Skip multi-repo when…</h3>
+      <ul style="font-size: 0.7em;">
+        <li><strong>Changes can be sequenced</strong> — backend merges first, then a focused frontend session. Two clean sessions &gt; one tangled one.</li>
+        <li><strong>You're only reading</strong> — narrow single-repo session or Chat.</li>
+        <li><strong>"Shared" is a published dep</strong> — update, publish, consume. Don't patch in-place.</li>
+        <li><strong>You're exploring</strong> — use Chat, not a write-enabled multi-repo session.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="green">Umbrella folder<br><span style="font-size: 0.7em; color: var(--accent3);">(frequent cross-cutting work)</span></h3>
+      <pre style="font-size: 0.6em;"><code class="language-text">~/work/cross-cutting/
+├── CLAUDE.md            ← architecture notes
+├── .claude/
+│   ├── settings.json    ← additionalDirectories
+│   └── skills/          ← cross-repo skills
+└── (no code — launch point)</code></pre>
+      <p style="font-size: 0.66em;">An explicit, named place for cross-repo work —<br>so you stop drifting back to the parent folder.</p>
+    </div>
+  </div>
+  <aside class="notes">
+    Sequence-it is often cleaner than people think. Two focused sessions beat one tangled multi-repo
+    session almost every time. But when the change must land together, the umbrella folder is the
+    permanent home — give it its own CLAUDE.md describing system boundaries, and add skills tuned
+    to cross-cutting work. It turns "drift back to the parent" into "deliberate cross-cutting mode."
+  </aside>
+</section>
+
 <!-- 1B: Keyboard Shortcuts -->
 <section>
   <h2>Essential Shortcuts<span class="demo-tag">live demo</span></h2>
@@ -330,23 +598,24 @@ code ~/work     ← opens parent</code></pre>
 <!-- 1C: Plan Mode -->
 <section>
   <h2>Plan Mode<span class="demo-tag">live demo</span></h2>
+  <p style="font-size: 0.8em;">With 6 sessions running, the bottleneck is <strong>your attention</strong>, not Claude's speed.</p>
   <div class="two-col">
     <div>
-      <h3>Without Plan Mode</h3>
-      <ul style="font-size: 0.8em;">
-        <li>Claude edits files immediately</li>
-        <li>You must watch every session</li>
-        <li>Bad edits happen silently</li>
-        <li class="red">Doesn't scale to parallel</li>
+      <h3 class="green">Plan Mode — default</h3>
+      <ul style="font-size: 0.75em;">
+        <li>Review a 1-page plan, not a 400-line diff</li>
+        <li>Catch wrong approach <em>before</em> the cascade</li>
+        <li>Sessions block waiting for you — no races</li>
+        <li>Safe to leave unattended</li>
       </ul>
     </div>
     <div>
-      <h3>With Plan Mode</h3>
-      <ul style="font-size: 0.8em;">
-        <li>Claude proposes a plan first</li>
-        <li>Plan saved as a file you can review</li>
-        <li>You approve before any edits</li>
-        <li class="green">Safe for 5+ parallel sessions</li>
+      <h3>Accept Edits — opt in</h3>
+      <ul style="font-size: 0.75em;">
+        <li>Narrow, well-scoped tasks</li>
+        <li>Reversible work in a throwaway worktree</li>
+        <li>Sessions you're actively watching</li>
+        <li><span class="key">Shift+Tab</span> to switch per-session</li>
       </ul>
     </div>
   </div>
@@ -357,8 +626,13 @@ code ~/work     ← opens parent</code></pre>
   }
 }</code></pre>
   <aside class="notes">
-    DEMO: Start a task in plan mode. Show the plan file appearing.
-    Review it, approve it. This is what makes parallel work safe.
+    DEMO: Start a task in plan mode. Show the plan appearing.
+    Review it, approve it. Then Shift+Tab to flip a session into accept-edits
+    when you want to let it rip.
+
+    Key point: plan mode isn't about safety paranoia — it's about review economics.
+    Plans are cheap to skim across many sessions; diffs are not. And a wrong plan
+    is cheaper to fix than wrong code that other edits were built on top of.
   </aside>
 </section>
 
