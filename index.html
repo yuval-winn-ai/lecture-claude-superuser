@@ -684,12 +684,7 @@ making any changes.</code></pre>
 (reads only what's needed)</code></pre>
     </div>
   </div>
-  <div class="highlight-box fragment" style="font-size: 0.85em;">
-    <strong>Context window docs:</strong>
-    <a href="https://code.claude.com/docs/en/context-window" style="color: var(--accent2);">code.claude.com/docs/en/context-window</a>
-  </div>
   <aside class="notes">
-    Show the context window docs page.
     @ is convenient but sends the entire file. For large files, telling Claude
     which lines to read is much more efficient.
     In parallel work, short focused sessions are better than one mega-session
@@ -723,6 +718,37 @@ making any changes.</code></pre>
     It sends a lightweight pointer — path, selection, diagnostics. Claude decides what to Read.
     The @ shortcut is the wasteful pattern — it inlines the full file. Use line ranges or let
     the IDE pointer do the work.
+  </aside>
+</section>
+
+<!-- 2A3: Why Token Waste Hurts -->
+<section>
+  <h2>Why Token Waste Hurts</h2>
+  <p style="font-size: 0.82em;">One session's bloat taxes the whole fleet.</p>
+  <table style="font-size: 0.66em;">
+    <thead>
+      <tr><th>Cost</th><th>What actually happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Usage limits</td><td>Fewer parallel sessions before you're rate-limited</td></tr>
+      <tr><td>Latency</td><td>Longer turns &times; many sessions = fewer iterations per hour</td></tr>
+      <tr><td class="red">Attention dilution</td><td>Quality drops <em>before</em> the window fills — key details get "lost in the middle"</td></tr>
+      <tr><td class="red">Forced compaction</td><td>At the limit, Claude summarizes earlier turns — paraphrasing drops exact paths, line numbers, the <em>why</em> behind decisions</td></tr>
+      <tr><td>Cache busting</td><td>Noisy tool output breaks the prompt cache — every subsequent turn is slower and costs more</td></tr>
+      <tr><td>Stall risk</td><td>Bloated sessions hit the limit mid-task; rescuing a stalled session costs more than scoping one to finish clean</td></tr>
+    </tbody>
+  </table>
+  <div class="highlight-box fragment" style="margin-top: 12px; font-size: 0.85em; text-align: center;">
+    Short, focused sessions aren't just safer — they're <span class="green">strictly higher throughput</span>.
+  </div>
+  <aside class="notes">
+    The obvious costs — usage limits, latency — are the ones everyone names first.
+    The less obvious ones matter more:
+    - Attention dilution: model quality degrades with noise well before hitting the window.
+    - Compaction is lossy. Post-compaction sessions often repeat mistakes the pre-compaction session already learned from.
+    - Cache busting: Claude Code caches the conversation prefix. Churn in that prefix makes every turn pay the miss.
+    - Fleet tax: every extra second per turn compounds across 5+ parallel sessions.
+    This slide is the *why* behind the next slide's "many short sessions" recommendation.
   </aside>
 </section>
 
