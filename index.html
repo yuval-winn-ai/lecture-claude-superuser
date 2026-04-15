@@ -201,6 +201,72 @@
   </div>
 </section>
 
+<!-- 1A2: Open on the Right Project -->
+<section>
+  <h2>Open Claude on the <em>Right</em> Project</h2>
+  <p style="font-size: 0.78em;">Claude's working directory is the root of almost everything it knows.</p>
+  <table style="font-size: 0.6em;">
+    <thead>
+      <tr><th>Scoped to CWD</th><th>If you launch from the parent folder…</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>./CLAUDE.md</code></td><td class="red">Not loaded — project rules invisible</td></tr>
+      <tr><td><code>./.claude/settings.json</code></td><td class="red">Hooks, permissions, plan mode don't apply</td></tr>
+      <tr><td><code>./.mcp.json</code></td><td class="red">Per-project MCP servers miss</td></tr>
+      <tr><td><code>./.claude/skills/</code>, <code>agents/</code></td><td class="red">Project skills &amp; subagents invisible</td></tr>
+      <tr><td>Auto-memory namespace</td><td class="red">Wrong namespace — past context doesn't apply</td></tr>
+      <tr><td>Glob / Grep / Read</td><td class="orange">Scans all sibling repos — slow + noisy context</td></tr>
+      <tr><td>Git &amp; <code>gh</code> commands</td><td class="red">"Not a git repo" or wrong repo</td></tr>
+      <tr><td>Bash blast radius</td><td class="red"><code>rm -rf</code> can reach every sibling</td></tr>
+    </tbody>
+  </table>
+  <div class="highlight-box" style="font-size: 0.85em; margin-top: 10px;">
+    <strong>Rule for parallel sessions:</strong> 1 Claude process = 1 project root.
+  </div>
+  <aside class="notes">
+    The parent-folder habit is the silent killer of everything else in this talk.
+    Memory, CLAUDE.md, MCP, hooks, git context — all keyed to CWD.
+    Launch from the parent and none of them apply, and you won't get an error — just quiet degradation.
+  </aside>
+</section>
+
+<!-- 1A3: VSCode Parent-Folder Trap -->
+<section>
+  <h2>The VSCode Parent-Folder Trap</h2>
+  <p style="font-size: 0.78em;">
+    The extension uses VSCode's workspace root as Claude's CWD.<br>
+    Open VSCode on a parent of many repos → you lose everything on the previous slide.
+  </p>
+  <div class="two-col" style="margin-top: 0.6em;">
+    <div>
+      <h3 class="red">Common habit</h3>
+      <pre><code class="language-text">~/work/
+├── repo-a/    ← real project
+├── repo-b/
+└── repo-c/
+
+code ~/work     ← opens parent</code></pre>
+      <p style="font-size: 0.68em;">
+        CWD = <code>~/work</code>. No repo-level <code>CLAUDE.md</code>,
+        memory writes to parent namespace, Glob scans all three.
+      </p>
+    </div>
+    <div>
+      <h3 class="green">Fixes (in order)</h3>
+      <ol style="font-size: 0.72em;">
+        <li><strong>One VSCode window per repo</strong> — cleanest</li>
+        <li><strong>Multi-root workspace</strong> — add each repo as its own root so Claude anchors per-root</li>
+        <li><strong>VSCode as viewer, Warp for Claude</strong> — scales best to many parallel sessions</li>
+      </ol>
+    </div>
+  </div>
+  <aside class="notes">
+    If people remember one thing from Section 1, this is it.
+    Multi-root workspaces are the decent compromise for VSCode addicts,
+    but once you have 5+ parallel sessions, separate Warp tabs each cd'd into their repo wins.
+  </aside>
+</section>
+
 <!-- 1B: Keyboard Shortcuts -->
 <section>
   <h2>Essential Shortcuts<span class="demo-tag">live demo</span></h2>
@@ -354,6 +420,35 @@
     which lines to read is much more efficient.
     In parallel work, short focused sessions are better than one mega-session
     that hits context limits.
+  </aside>
+</section>
+
+<!-- 2A2: How the VSCode Extension Shares Context -->
+<section>
+  <h2>How the VSCode Extension Shares Context</h2>
+  <p style="font-size: 0.8em;">The IDE tells Claude <em>what you're looking at</em> — not the full file.</p>
+  <table style="font-size: 0.66em;">
+    <thead>
+      <tr><th>Signal</th><th>What's sent</th><th>Cost</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Active file</td><td>Path + cursor position</td><td class="green">Tiny (pointer)</td></tr>
+      <tr><td>Selection</td><td>Selected text inline</td><td class="green">Small</td></tr>
+      <tr><td>Open tabs</td><td>List of paths</td><td class="green">Tiny</td></tr>
+      <tr><td>LSP diagnostics</td><td>Errors/warnings in view</td><td class="green">Small</td></tr>
+      <tr><td><code>@filename</code> in prompt</td><td class="red">Entire file inlined as text</td><td class="red">Can be huge</td></tr>
+    </tbody>
+  </table>
+  <div class="highlight-box" style="font-size: 0.82em; margin-top: 12px;">
+    Claude fetches content on demand via <code>Read</code> with <code>offset</code>/<code>limit</code>.<br>
+    <span class="green">IDE auto-context = efficient.</span> &nbsp;
+    <span class="red"><code>@filename</code> = expensive.</span>
+  </div>
+  <aside class="notes">
+    Common misconception: the VSCode extension ships the whole file on every turn. It doesn't.
+    It sends a lightweight pointer — path, selection, diagnostics. Claude decides what to Read.
+    The @ shortcut is the wasteful pattern — it inlines the full file. Use line ranges or let
+    the IDE pointer do the work.
   </aside>
 </section>
 
