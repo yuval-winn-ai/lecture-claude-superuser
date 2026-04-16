@@ -56,6 +56,13 @@
     .reveal .orange { color: #fb923c; }
     .recipe-step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
     .recipe-num { background: var(--accent); color: black; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.7em; flex-shrink: 0; }
+    .reveal section.section-brief { text-align: center; border-top: 2px solid var(--accent3); padding-top: 24px; }
+    .reveal section.section-brief h3 { font-size: 0.9em; color: var(--accent3); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.6em; }
+    .reveal section.section-brief .brief-body { font-size: 0.85em; color: #d4d4d8; max-width: 700px; margin: 0 auto; line-height: 1.5; }
+    .reveal section.section-debrief { text-align: center; border-bottom: 2px solid var(--accent); padding-bottom: 24px; }
+    .reveal section.section-debrief h3 { font-size: 0.9em; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.6em; }
+    .reveal section.section-debrief .debrief-body { font-size: 0.85em; color: #d4d4d8; max-width: 700px; margin: 0 auto; line-height: 1.5; }
+    .reveal section.section-debrief .bridge { margin-top: 1.2em; font-size: 0.78em; color: var(--accent2); font-style: italic; }
   </style>
 </head>
 <body>
@@ -128,6 +135,19 @@
   <div class="section-num">01</div>
   <h2>Setup &amp; Foundations</h2>
   <p class="subtitle">Your cockpit</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>Where you launch Claude from determines what it can see, remember, and do.</p>
+    <p style="margin-top: 0.8em;">By the end of this section: you'll have a cockpit that scales to 5+ parallel sessions without silent failures.</p>
+  </div>
+  <aside class="notes">
+    Quick framing: this is the longest section (13 slides) and it's dense on purpose.
+    If they get the CWD hygiene right, everything else in the talk works.
+    If they don't, nothing does. Say that out loud.
+  </aside>
 </section>
 
 <!-- 1.1: Where to Run Claude Code -->
@@ -646,6 +666,20 @@ making any changes.</code></pre>
   </aside>
 </section>
 
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">One Claude = one project root.</span><br>
+    Warp or iTerm2 for parallel tabs. Plan mode as the default gate.</p>
+    <p class="bridge">Your cockpit is ready. Now let's make each session lean enough to multiply.</p>
+  </div>
+  <aside class="notes">
+    Recap: CWD hygiene, terminal choice, plan mode. Three things.
+    Bridge: we can now run sessions in the right place — next question is
+    how to keep each session efficient so running five doesn't cost five times as much.
+  </aside>
+</section>
+
 <!-- ============================================================ -->
 <!-- SECTION 2: EFFICIENCY &amp; FOCUS                               -->
 <!-- ============================================================ -->
@@ -654,6 +688,18 @@ making any changes.</code></pre>
   <div class="section-num">02</div>
   <h2>Efficiency &amp; Focus</h2>
   <p class="subtitle">Make one session lean — then multiply</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>Every wasted token in one session is a tax on your entire fleet.</p>
+    <p style="margin-top: 0.8em;">By the end: you'll know how to keep sessions short, focused, and cheap — the prerequisite for running many at once.</p>
+  </div>
+  <aside class="notes">
+    Short section — only 4 slides. Frame it as the economic argument for parallelism.
+    One bloated session isn't just slow, it eats into your budget for the other four.
+  </aside>
 </section>
 
 <!-- 2.1: File References & Context (merged) -->
@@ -816,6 +862,20 @@ making any changes.</code></pre>
   </aside>
 </section>
 
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">Short sessions, surgical context, let Claude ask the questions.</span><br>
+    Lean sessions are faster, cheaper, and scale to parallel.</p>
+    <p class="bridge">But you're still repeating yourself every session. What if Claude already knew?</p>
+  </div>
+  <aside class="notes">
+    Bridge: efficiency is about what you do in the session.
+    Next section is about what the session already knows before you type anything.
+    That's the shift from per-session effort to per-project configuration.
+  </aside>
+</section>
+
 <!-- ============================================================ -->
 <!-- SECTION 3: ENCODING KNOWLEDGE                                -->
 <!-- ============================================================ -->
@@ -824,6 +884,19 @@ making any changes.</code></pre>
   <div class="section-num">03</div>
   <h2>Encoding Knowledge</h2>
   <p class="subtitle">Write it down once — every session already knows</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>If you repeat the same instruction to Claude more than once — that's a bug in your setup, not Claude's memory.</p>
+    <p style="margin-top: 0.8em;">By the end: settings, CLAUDE.md, skills, and hooks will carry your knowledge into every session automatically.</p>
+  </div>
+  <aside class="notes">
+    This is the section where the audience starts saving real time.
+    Skills especially — /update-jira is the canonical example.
+    Frame it as: you're programming Claude's defaults, not its behavior.
+  </aside>
 </section>
 
 <!-- 3.1: Update Claude's Settings -->
@@ -950,6 +1023,19 @@ Step 7: Return link to updated ticket</code></pre>
   </aside>
 </section>
 
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">Write it once, every session inherits it.</span><br>
+    Settings, CLAUDE.md, skills, guardrail hooks — four layers of encoded knowledge.</p>
+    <p class="bridge">Sessions now know your rules and workflows. But you're still watching them work. What if you didn't have to?</p>
+  </div>
+  <aside class="notes">
+    Bridge: we've set up the cockpit (S1), made sessions lean (S2), encoded knowledge (S3).
+    The remaining bottleneck is you sitting there watching. Next section removes that.
+  </aside>
+</section>
+
 <!-- ============================================================ -->
 <!-- SECTION 4: NEVER WATCH CLAUDE WORK                           -->
 <!-- ============================================================ -->
@@ -958,6 +1044,19 @@ Step 7: Return link to updated ticket</code></pre>
   <div class="section-num">04</div>
   <h2>Never Watch Claude Work</h2>
   <p class="subtitle">The notification pipeline</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>Parallel sessions are useless if you have to babysit each one.</p>
+    <p style="margin-top: 0.8em;">By the end: Claude will notify you when it needs you — and clicking that notification will land you on the exact tab.</p>
+  </div>
+  <aside class="notes">
+    This is the section with the signature demo.
+    The hook pipeline is the mechanical answer to "how do I run 5 sessions without going crazy?"
+    Build anticipation — the demo at the end is the payoff.
+  </aside>
 </section>
 
 <!-- 4.1: Hooks Architecture -->
@@ -1109,6 +1208,20 @@ done</code></pre>
   </aside>
 </section>
 
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">Notifications + tab focusing = you never hunt for the right session.</span><br>
+    The notification pipeline makes parallel work feel like a queue, not chaos.</p>
+    <p class="bridge">Sessions can reach you. But can they reach your database? Your browser? Let's give them more tools.</p>
+  </div>
+  <aside class="notes">
+    Bridge: the notification pipeline solves the attention problem.
+    The next bottleneck is capability — sessions that need external data still block on you.
+    MCP and power tools solve that.
+  </aside>
+</section>
+
 <!-- ============================================================ -->
 <!-- SECTION 5: POWER TOOLS                                       -->
 <!-- ============================================================ -->
@@ -1117,6 +1230,19 @@ done</code></pre>
   <div class="section-num">05</div>
   <h2>Power Tools</h2>
   <p class="subtitle">LSP, MCP, and bots</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>A session that asks you for data is a session that blocks the queue.</p>
+    <p style="margin-top: 0.8em;">By the end: Claude will type-check itself, query your database, read your browser, and trigger PR reviews — without you.</p>
+  </div>
+  <aside class="notes">
+    Frame: each tool we add removes one more reason a session would need to interrupt you.
+    LSP = type errors. MCP = data questions. Qodo = review feedback.
+    Self-sufficient sessions are the last prerequisite before pure parallel workflows.
+  </aside>
 </section>
 
 <!-- 5.1: TypeScript LSP -->
@@ -1290,6 +1416,20 @@ done</code></pre>
   </aside>
 </section>
 
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">Self-sufficient sessions don't block on you.</span><br>
+    LSP, MCP, and bots let Claude answer its own questions.</p>
+    <p class="bridge">Sessions are now autonomous. But how do you actually give them work? Let's talk about the input side.</p>
+  </div>
+  <aside class="notes">
+    Bridge: we've been focused on making sessions capable and independent.
+    The next question is: what's the fastest way to feed work into them?
+    CLI-first workflows are the answer — paste a URL, walk away.
+  </aside>
+</section>
+
 <!-- ============================================================ -->
 <!-- SECTION 6: CLI-FIRST WORKFLOWS                               -->
 <!-- ============================================================ -->
@@ -1298,6 +1438,19 @@ done</code></pre>
   <div class="section-num">06</div>
   <h2>CLI-First Workflows</h2>
   <p class="subtitle">The fastest path is always a CLI</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>The fastest way to start a parallel task: paste one URL and switch tabs.</p>
+    <p style="margin-top: 0.8em;">By the end: PR reviews, CI failures, and Jira updates will each be a single command.</p>
+  </div>
+  <aside class="notes">
+    Three slides, three patterns. Each one is: URL in, result out, no copy-paste.
+    This is the shape of work that parallelizes trivially —
+    because there's nothing to watch and nothing to explain.
+  </aside>
 </section>
 
 <!-- 6.1: Always Prefer CLI -->
@@ -1394,6 +1547,21 @@ gh pr diff 297
   </aside>
 </section>
 
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">One URL in, result out. No copy-paste, no browser.</span><br>
+    CLI workflows are the unit of parallelism — fire five, come back when notified.</p>
+    <p class="bridge">You now have everything. Time to put it all together.</p>
+  </div>
+  <aside class="notes">
+    Bridge: this is the moment. Every prerequisite is in place:
+    cockpit (S1), lean sessions (S2), encoded knowledge (S3),
+    notifications (S4), self-sufficient tools (S5), CLI inputs (S6).
+    Next section is the payoff — running them all in parallel.
+  </aside>
+</section>
+
 <!-- ============================================================ -->
 <!-- SECTION 7: PARALLEL MASTERY                                  -->
 <!-- ============================================================ -->
@@ -1402,6 +1570,19 @@ gh pr diff 297
   <div class="section-num">07</div>
   <h2>Parallel Mastery</h2>
   <p class="subtitle">The payoff — everything so far was for this</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>This is what the entire talk was building toward.</p>
+    <p style="margin-top: 0.8em;">By the end: worktrees, a dashboard, utility scripts, and remote control — the infrastructure for running 5+ Claude sessions simultaneously.</p>
+  </div>
+  <aside class="notes">
+    This is the climax. Don't rush the framing.
+    Everything before this was a prerequisite — now it pays off.
+    The audience should feel the momentum: "oh, THIS is why we covered all that."
+  </aside>
 </section>
 
 <!-- 7.1: Worktrees -->
@@ -1557,6 +1738,19 @@ alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
   </aside>
 </section>
 
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">Worktrees for isolation. Dashboard for visibility. Remote control for mobility.</span><br>
+    Parallel Claude isn't a hack — it's an architecture.</p>
+    <p class="bridge">Let's see the daily workflow that ties it all together.</p>
+  </div>
+  <aside class="notes">
+    Bridge: from "here are the tools" to "here's the daily routine."
+    The recipe in S8 is the practical, repeatable version of everything we just showed.
+  </aside>
+</section>
+
 <!-- ============================================================ -->
 <!-- SECTION 8: CLOSING                                           -->
 <!-- ============================================================ -->
@@ -1565,6 +1759,18 @@ alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
   <div class="section-num">08</div>
   <h2>Putting It All Together</h2>
   <p class="subtitle">The daily parallel workflow</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>Everything from sections 1 through 7, compressed into a daily routine.</p>
+    <p style="margin-top: 0.8em;">By the end: one recipe you can follow starting tomorrow morning.</p>
+  </div>
+  <aside class="notes">
+    Keep this quick. The audience is ready for the payoff.
+    The recipe slide is the one they'll photograph.
+  </aside>
 </section>
 
 <section>
