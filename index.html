@@ -1425,7 +1425,7 @@ Step 7: Return link to updated ticket</code></pre>
   <h3>Coming Up</h3>
   <div class="brief-body">
     <p>The fastest way to start a parallel task: paste one URL and switch tabs.</p>
-    <p style="margin-top: 0.8em;">By the end: PR reviews, CI failures, and Jira updates will each be a single command.</p>
+    <p style="margin-top: 0.8em;">By the end: PR reviews, CI failures, Jira updates, and repo management will each be a single command.</p>
   </div>
   <aside class="notes">
     Three slides, three patterns. Each one is: URL in, result out, no copy-paste.
@@ -1528,6 +1528,41 @@ gh pr diff 297
   </aside>
 </section>
 
+<!-- 5.4: Utility Scripts -->
+<section>
+  <h2>Utility Scripts<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
+  <div style="font-size: 0.75em;">
+    <div class="highlight-box" style="border-color: var(--accent3);">
+      <strong><code>git-report.sh</code></strong> — Multi-repo status at a glance<br>
+      <span class="small">Branch, dirty/clean, stash count, worktree detection, origin sync (ahead/behind)</span>
+    </div>
+    <div class="highlight-box" style="border-color: var(--accent2);">
+      <strong><code>git-reset-repos.sh</code></strong> — Interactive multi-repo reset<br>
+      <span class="small">fzf multi-select → stash+pull or conditional-pull across repos</span>
+    </div>
+    <div class="highlight-box" style="border-color: var(--accent);">
+      <strong><code>deploy-pr.sh</code></strong> — One-command PR deployment<br>
+      <span class="small">Auto-detect repo → monitor CI → fetch image → deploy to k8s → Slack notification</span>
+    </div>
+  </div>
+  <br>
+  <pre class="fragment"><code class="language-bash"># One-time setup: add to ~/.zshrc
+alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
+  /contents/scripts/deploy-pr.sh --jq ".content" | base64 -d)'</code></pre>
+  <aside class="notes">
+    DEMO — Utility Scripts
+
+    SCREEN: laptop (Warp)
+    SETUP: git-report.sh and deploy-pr alias installed.
+    ACTIONS:
+      1. Run git-report.sh — show the multi-repo table, point at worktree entries.
+      2. Show the deploy-pr one-liner alias definition.
+      3. (Skip an actual deploy unless you have time budget.)
+    KEY POINT: These scripts collapse the overhead of managing many repos in parallel.
+    They're what makes the "5 sessions, 5 tabs, 5 repos" workflow not collapse under its own weight.
+  </aside>
+</section>
+
 <section class="section-debrief center-slide">
   <h3>Takeaway</h3>
   <div class="debrief-body">
@@ -1557,7 +1592,7 @@ gh pr diff 297
   <h3>Coming Up</h3>
   <div class="brief-body">
     <p>This is what the entire talk was building toward.</p>
-    <p style="margin-top: 0.8em;">By the end: worktrees, a dashboard, utility scripts, and remote control — the infrastructure for running 5+ Claude sessions simultaneously.</p>
+    <p style="margin-top: 0.8em;">By the end: worktrees, a dashboard, and remote control — the infrastructure for running 5+ Claude sessions simultaneously.</p>
   </div>
   <aside class="notes">
     This is the climax. Don't rush the framing.
@@ -1654,42 +1689,7 @@ Python HTTP Server
   </aside>
 </section>
 
-<!-- 6.3: Utility Scripts -->
-<section>
-  <h2>Utility Scripts<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
-  <div style="font-size: 0.75em;">
-    <div class="highlight-box" style="border-color: var(--accent3);">
-      <strong><code>git-report.sh</code></strong> — Multi-repo status at a glance<br>
-      <span class="small">Branch, dirty/clean, stash count, worktree detection, origin sync (ahead/behind)</span>
-    </div>
-    <div class="highlight-box" style="border-color: var(--accent2);">
-      <strong><code>git-reset-repos.sh</code></strong> — Interactive multi-repo reset<br>
-      <span class="small">fzf multi-select → stash+pull or conditional-pull across repos</span>
-    </div>
-    <div class="highlight-box" style="border-color: var(--accent);">
-      <strong><code>deploy-pr.sh</code></strong> — One-command PR deployment<br>
-      <span class="small">Auto-detect repo → monitor CI → fetch image → deploy to k8s → Slack notification</span>
-    </div>
-  </div>
-  <br>
-  <pre class="fragment"><code class="language-bash"># One-time setup: add to ~/.zshrc
-alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
-  /contents/scripts/deploy-pr.sh --jq ".content" | base64 -d)'</code></pre>
-  <aside class="notes">
-    DEMO — Utility Scripts
-
-    SCREEN: laptop (Warp)
-    SETUP: git-report.sh and deploy-pr alias installed.
-    ACTIONS:
-      1. Run git-report.sh — show the multi-repo table, point at worktree entries.
-      2. Show the deploy-pr one-liner alias definition.
-      3. (Skip an actual deploy unless you have time budget.)
-    KEY POINT: These scripts collapse the overhead of managing many repos in parallel.
-    They're what makes the "5 sessions, 5 tabs, 5 repos" workflow not collapse under its own weight.
-  </aside>
-</section>
-
-<!-- 6.4: Remote Control -->
+<!-- 6.3: Remote Control -->
 <section>
   <h2>Claude Remote Control<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span><span class="demo-tag phone-tag">phone</span></h2>
   <div class="highlight-box" style="font-size: 0.9em;">
