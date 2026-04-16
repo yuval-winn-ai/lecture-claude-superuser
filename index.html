@@ -150,72 +150,168 @@
   </aside>
 </section>
 
-<!-- 1.1: Where to Run Claude Code -->
+<!-- 1.1a: Where Claude Lives — The Interactive Spectrum -->
 <section>
-  <h2>Where to Run Claude Code</h2>
-  <table style="font-size: 0.6em;">
+  <h2>Where Claude Lives</h2>
+  <p style="font-size: 0.65em; color: #a1a1aa; margin-bottom: 0.6em;">From casual chat to fully controlled terminal</p>
+  <table style="font-size: 0.55em;">
     <thead>
-      <tr><th></th><th>Ease of Use</th><th>Parallel Sessions</th><th>Notifications</th><th>VS Code Reload</th></tr>
+      <tr><th></th><th>What You Get</th><th>Control</th></tr>
     </thead>
     <tbody>
       <tr>
-        <td><strong class="purple">Warp</strong></td>
-        <td class="green">Great UX</td>
-        <td class="green">Tabs + naming</td>
-        <td class="green">Native</td>
-        <td>N/A (separate)</td>
+        <td><strong>Chat</strong><br><span style="color:#a1a1aa;">claude.ai · Desktop Chat tab · Mobile</span></td>
+        <td>Conversation only — no file access, no terminal</td>
+        <td>Lowest</td>
       </tr>
       <tr>
-        <td><strong>Terminal.app</strong></td>
-        <td>Basic</td>
-        <td>Windows/tabs</td>
-        <td class="red">Manual hooks</td>
-        <td>N/A</td>
+        <td><strong class="green">Web Code</strong><br><span style="color:#a1a1aa;">claude.ai/code</span></td>
+        <td>Full coding agent in the cloud — GitHub-connected, sessions survive closing your laptop</td>
+        <td></td>
       </tr>
       <tr>
-        <td><strong class="blue">VS Code Terminal</strong></td>
-        <td class="green">In editor</td>
-        <td>Multiple panels</td>
-        <td class="orange">Tab dots only</td>
-        <td class="red">Kills session</td>
+        <td><strong class="blue">IDE Extensions</strong><br><span style="color:#a1a1aa;">VS Code · JetBrains</span></td>
+        <td>Coding agent inside your editor — inline diffs, @-mentions, conversation tabs</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong class="purple">Desktop App</strong><br><span style="color:#a1a1aa;">Code tab + Cowork tab</span></td>
+        <td>Visual agent on local files — parallel sessions with auto worktree isolation, PR monitoring, preview pane, computer use. Cowork runs autonomously in a cloud VM.</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><strong class="orange">CLI in Terminal</strong></td>
+        <td>Maximum control — hooks, MCP servers, piping, scripting, composable with Unix tools</td>
+        <td><strong class="orange">Highest</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size: 0.55em; color: #a1a1aa; margin-top: 0.5em;">
+    <strong class="blue">Chrome Extension</strong> works as a companion across IDE / Desktop / CLI — browser automation, console &amp; network access.
+    <br>Sessions are portable: <code>--teleport</code>, <code>/desktop</code>, Remote Control.
+  </p>
+  <aside class="notes">
+    Frame: "Claude exists on a spectrum — you pick the point that matches your task."
+    Walk top to bottom. Emphasize that session portability means you're not locked in —
+    start on CLI, continue on phone, or hand off to Desktop for visual diff review.
+  </aside>
+</section>
+
+<!-- 1.1b: Beyond the Screen — Automated / Cloud / Team -->
+<section>
+  <h2>Beyond the Screen</h2>
+  <p style="font-size: 0.65em; color: #a1a1aa; margin-bottom: 0.6em;">Claude running autonomously — no human in the loop</p>
+  <div class="two-col" style="font-size: 0.62em;">
+    <div>
+      <h3>Scheduled</h3>
+      <ul>
+        <li><strong>Routines</strong> — cloud sessions on schedule, API trigger, or GitHub event (Anthropic infra)</li>
+        <li><strong>Desktop Scheduled Tasks</strong> — local recurring tasks on your machine</li>
+        <li><strong><code>/loop</code></strong> — repeat a prompt inside an open CLI session</li>
+      </ul>
+      <h3>CI / CD</h3>
+      <ul>
+        <li><strong>GitHub Actions</strong> — <code>claude-code-action</code> for PR review, issue triage, code fixes</li>
+        <li><strong>GitHub Code Review</strong> — auto review on every PR</li>
+        <li><strong>GitLab CI/CD</strong></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Team &amp; Remote</h3>
+      <ul>
+        <li><strong>Slack</strong> — @Claude in channels, creates code sessions</li>
+        <li><strong>Remote Control</strong> — continue local sessions from phone/browser</li>
+        <li><strong>Dispatch</strong> — message a task from phone → Desktop session</li>
+        <li><strong>Channels</strong> — Telegram, Discord, iMessage, webhooks → session</li>
+      </ul>
+      <h3>Build Your Own</h3>
+      <ul>
+        <li><strong>Agent SDK</strong> — Python / TypeScript custom agents</li>
+        <li><strong>Managed Agents</strong> — enterprise-scale orchestration</li>
+        <li><strong>Claude API</strong> — direct model access</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes">
+    Quick scan — don't dwell on each item. Point: Claude isn't just a chat window.
+    These are the multipliers we'll revisit in §4 (hooks/notifications),
+    §6 (CLI workflows), and §7 (parallel mastery).
+    Chrome Extension also lives here — browser automation for testing/QA.
+  </aside>
+</section>
+
+<!-- 1.1c: Choosing Your Surface — Comparison for Parallel Work -->
+<section>
+  <h2>Choosing Your Surface</h2>
+  <p style="font-size: 0.65em; color: #a1a1aa; margin-bottom: 0.6em;">What matters for running 5+ sessions at once</p>
+  <table style="font-size: 0.6em;">
+    <thead>
+      <tr><th></th><th>Ease of Use</th><th>Parallel Sessions</th><th>Notifications</th><th>Session Portability</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong class="purple">Desktop App</strong></td>
+        <td class="green">Best UX</td>
+        <td class="green">Auto worktree isolation</td>
+        <td class="green">Built-in</td>
+        <td>Dispatch, Remote Control</td>
       </tr>
       <tr>
         <td><strong class="blue">VS Code Extension</strong></td>
-        <td class="green">Best UX</td>
+        <td class="green">In-editor</td>
         <td>Conversation tabs</td>
         <td class="orange">Tab dots only</td>
-        <td class="green">Survives reload</td>
+        <td><code>/desktop</code> handoff</td>
       </tr>
       <tr>
-        <td><strong>iTerm2</strong></td>
-        <td class="green">Good</td>
-        <td class="green">Tabs + splits</td>
-        <td class="green">Native</td>
-        <td>N/A</td>
+        <td><strong class="orange">Terminal</strong></td>
+        <td>Scriptable</td>
+        <td class="green">Tabs + naming</td>
+        <td class="green">Native (hooks)</td>
+        <td><code>--teleport</code></td>
+      </tr>
+      <tr>
+        <td><strong class="green">Web</strong></td>
+        <td class="green">No setup</td>
+        <td class="green">Multiple sessions</td>
+        <td class="green">Mobile app</td>
+        <td>Close laptop, continue</td>
       </tr>
     </tbody>
   </table>
   <aside class="notes">
-    Walk through each row. Key takeaway: for parallel work, Warp or iTerm2 win because of
-    native notifications and good tab management. VS Code Extension is best for single-task focus.
+    For THIS talk — parallel mastery — we'll focus on Terminal.
+    Sections 4–7 build the cockpit that makes terminal the best surface
+    for running 5+ sessions: hooks for notifications, MCP for tools,
+    worktrees for isolation, and a dashboard for visibility.
   </aside>
 </section>
 
 <!-- 1.2: The Verdict -->
 <section>
   <h2>The Verdict</h2>
-  <div class="highlight-box" style="font-size: 0.85em;">
-    <p><strong class="purple">For parallel sessions:</strong> Warp or iTerm2</p>
-    <p>Tab naming, native notifications, scriptable tab switching</p>
+  <div class="highlight-box" style="font-size: 0.72em; margin: 10px 0; padding: 12px 20px;">
+    <p style="margin: 0;"><strong class="orange">For parallel sessions</strong> (this talk's focus)<strong class="orange">:</strong> Terminal (Warp or iTerm2)</p>
+    <p style="margin: 0.2em 0 0;">Hooks, tab naming, scriptable tab switching</p>
   </div>
-  <div class="highlight-box" style="font-size: 0.85em; border-color: var(--accent2);">
-    <p><strong class="blue">For focused single tasks:</strong> VS Code Extension</p>
-    <p>Best diff viewer, survives VS Code reload, inline file references</p>
+  <div class="highlight-box" style="font-size: 0.72em; margin: 10px 0; padding: 12px 20px; border-color: var(--accent2);">
+    <p style="margin: 0;"><strong class="blue">For focused single tasks:</strong> Desktop App or VS Code Extension</p>
+    <p style="margin: 0.2em 0 0;">Best diff viewer, visual review, inline file references</p>
   </div>
-  <div class="highlight-box" style="font-size: 0.85em; border-color: var(--accent3);">
-    <p><strong class="green">For long background tasks:</strong> claude.ai/code (Web)</p>
-    <p>Cloud-hosted, close your laptop, mobile notifications</p>
+  <div class="highlight-box" style="font-size: 0.72em; margin: 10px 0; padding: 12px 20px; border-color: var(--accent3);">
+    <p style="margin: 0;"><strong class="green">For long background tasks:</strong> Web (claude.ai/code) or Routines</p>
+    <p style="margin: 0.2em 0 0;">Close your laptop, mobile notifications, schedule/API/GitHub triggers</p>
   </div>
+  <div class="highlight-box" style="font-size: 0.72em; margin: 10px 0; padding: 12px 20px; border-color: #fb923c;">
+    <p style="margin: 0;"><strong class="orange">For automated workflows:</strong> Routines + GitHub Actions</p>
+    <p style="margin: 0.2em 0 0;">No human in the loop — PR review, issue triage, scheduled audits</p>
+  </div>
+  <aside class="notes">
+    Each surface has a sweet spot. This talk teaches the terminal path because
+    that's where parallel mastery lives. But if you only need one task done well,
+    Desktop or VS Code is great. And for things that should just happen on their own,
+    Routines and GitHub Actions are the answer.
+  </aside>
 </section>
 
 <!-- 1.3: WHY This Matters (runway into the deep-dive) -->
