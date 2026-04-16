@@ -203,12 +203,12 @@
   <h2>Why This Matters</h2>
   <div class="highlight-box" style="font-size: 0.95em; text-align: left; max-width: 780px; margin: 0 auto;">
     <p style="margin: 0 0 0.6em 0;">This is <strong class="orange">contested territory</strong>.</p>
-    <p style="margin: 0 0 0.6em 0;">Most devs launch Claude from whichever VSCode window happens to be open — usually a parent of many repos.</p>
+    <p style="margin: 0 0 0.6em 0;">Most devs launch Claude from whichever VSCode window is open — usually a parent of several repos.</p>
     <p style="margin: 0;"><span class="red">That habit quietly destroys almost everything else in this talk.</span></p>
   </div>
   <p class="fragment" style="font-size: 0.8em; margin-top: 1em; text-align: center;">
-    The next few slides are the case for why working correctly with Claude<br>
-    — starting with a real terminal — is the foundation everything sits on.
+    The next few slides show why getting this right<br>
+    — starting with a real terminal — is the foundation for everything else.
   </p>
   <aside class="notes">
     Frame the deep-dive. This is where a lot of the audience pushes back — "I like VSCode,
@@ -288,7 +288,7 @@
   <h2>The VSCode Parent-Folder Trap</h2>
   <p style="font-size: 0.78em;">
     The extension uses VSCode's workspace root as Claude's CWD.<br>
-    Open VSCode on a parent of many repos → you lose everything on the previous slide.
+    Open VSCode on a parent folder → everything on the previous slide breaks.
   </p>
   <div class="two-col" style="margin-top: 0.6em;">
     <div>
@@ -308,7 +308,7 @@ code ~/work     ← opens parent</code></pre>
       <h3 class="green">Fixes (in order)</h3>
       <ol style="font-size: 0.72em;">
         <li><strong>One VSCode window per repo</strong> — cleanest</li>
-        <li><strong>Multi-root workspace</strong> — add each repo as its own root so Claude anchors per-root</li>
+        <li><strong>Multi-root workspace</strong> — each repo as its own root, so Claude anchors correctly</li>
         <li><strong>VSCode as viewer, Warp for Claude</strong> — scales best to many parallel sessions</li>
       </ol>
     </div>
@@ -470,27 +470,27 @@ making any changes.</code></pre>
     <tbody>
       <tr>
         <td style="width: 26%;"><strong class="purple">Plan mode</strong></td>
-        <td>Non-negotiable. Let Claude write the cross-repo plan first, review it, approve.</td>
+        <td>Non-negotiable. Plan first, review, then approve.</td>
       </tr>
       <tr>
         <td><strong class="purple">Budget context</strong></td>
-        <td>Each peer repo expands Glob/Grep scope. Tell Claude which files matter — line ranges over <code>@file</code>.</td>
+        <td>Peers expand search scope. Point Claude at specific files — line ranges over <code>@file</code>.</td>
       </tr>
       <tr>
         <td><strong class="purple">One branch name</strong></td>
-        <td>Mirror the Jira ticket / branch name across all repos so the change set is discoverable.</td>
+        <td>Same Jira ticket / branch name in every repo.</td>
       </tr>
       <tr>
         <td><strong class="purple">Explicit git paths</strong></td>
-        <td>For peers, <code>git -C ../frontend …</code> — or let Claude resolve paths (it will).</td>
+        <td><code>git -C ../frontend …</code> for peers — or let Claude resolve paths.</td>
       </tr>
       <tr>
         <td><strong class="purple">Watch more, not less</strong></td>
-        <td>Fewer concurrent sessions, tighter supervision. These earn <em>less</em> autonomy than single-repo work.</td>
+        <td>Less autonomy than single-repo. Fewer sessions, closer watch.</td>
       </tr>
       <tr>
         <td><strong class="purple">One PR per repo</strong></td>
-        <td>Draft PRs in each repo with cross-links — reviewable atomically, same branch name everywhere.</td>
+        <td>Draft linked PRs in each repo — reviewable atomically.</td>
       </tr>
     </tbody>
   </table>
@@ -508,7 +508,7 @@ making any changes.</code></pre>
     <div>
       <h3 class="red">Skip multi-repo when…</h3>
       <ul style="font-size: 0.7em;">
-        <li><strong>Changes can be sequenced</strong> — backend merges first, then a focused frontend session. Two clean sessions &gt; one tangled one.</li>
+        <li><strong>Changes can be sequenced</strong> — two clean sessions beat one tangled one.</li>
         <li><strong>You're only reading</strong> — narrow single-repo session or Chat.</li>
         <li><strong>"Shared" is a published dep</strong> — update, publish, consume. Don't patch in-place.</li>
         <li><strong>You're exploring</strong> — use Chat, not a write-enabled multi-repo session.</li>
@@ -712,9 +712,9 @@ making any changes.</code></pre>
       <tr><td>Usage limits</td><td>Fewer parallel sessions before you're rate-limited</td></tr>
       <tr><td>Latency</td><td>Longer turns &times; many sessions = fewer iterations per hour</td></tr>
       <tr><td class="red">Attention dilution</td><td>Quality drops <em>before</em> the window fills — key details get "lost in the middle"</td></tr>
-      <tr><td class="red">Forced compaction</td><td>At the limit, Claude summarizes earlier turns — paraphrasing drops exact paths, line numbers, the <em>why</em> behind decisions</td></tr>
-      <tr><td>Cache busting</td><td>Noisy tool output breaks the prompt cache — every subsequent turn is slower and costs more</td></tr>
-      <tr><td>Stall risk</td><td>Bloated sessions hit the limit mid-task; rescuing a stalled session costs more than scoping one to finish clean</td></tr>
+      <tr><td class="red">Forced compaction</td><td>Claude summarizes older turns — exact paths, line numbers, and reasoning get lost</td></tr>
+      <tr><td>Cache busting</td><td>Noisy tool output breaks the prompt cache — every turn after costs more</td></tr>
+      <tr><td>Stall risk</td><td>Bloated sessions stall mid-task — rescue costs more than scoping to finish clean</td></tr>
     </tbody>
   </table>
   <div class="highlight-box fragment" style="margin-top: 12px; font-size: 0.85em; text-align: center;">
