@@ -24,25 +24,23 @@ Developers already use Claude Code, but one session at a time. This talk shows t
 
 ### Topics Covered (in section order)
 
-The deck has **9 sections** (Section 0 opener + §1–§8). Each section below maps to one `<!-- SECTION N: ... -->` block in `index.html`.
+The deck has **8 sections** (Section 0 opener + §1–§7). Each section below maps to one `<!-- SECTION N: ... -->` block in `index.html`.
 
 **§0 Opening Hook** — title, "The Problem" (one session at a time), roadmap.
 
-**§1 Efficiency & Focus** *(prerequisite for parallelism — must come before §7)* — `@filename` vs line-range file references, how the VSCode extension sends a lightweight pointer (not the full file), token economics (usage limits, attention dilution, forced compaction, cache busting, stall risk), context window visualizer (`docs.anthropic.com/en/docs/claude-code/context-window`), "interview me" pattern for both specs and avoiding workarounds. Placed first to establish *why* tokens matter before §2 argues *where* you launch Claude.
+**§1 Efficiency & Focus** *(prerequisite for parallelism — must come before §6)* — `@filename` vs line-range file references, how the VSCode extension sends a lightweight pointer (not the full file), token economics (usage limits, attention dilution, forced compaction, cache busting, stall risk), context window visualizer (`docs.anthropic.com/en/docs/claude-code/context-window`), "interview me" pattern for both specs and avoiding workarounds. Placed first to establish *why* tokens matter before §2 argues *where* you launch Claude.
 
 **§2 Setup & Foundations** *(intentionally deep — see note below)* — where to run (Warp/Terminal.app/VSCode/iTerm tradeoffs), the "1 Claude = 1 project root" rule, systems that silently fail under wrong CWD (CLAUDE.md, settings.json, .mcp.json, skills, auto-memory, Glob scope, git, Bash blast radius), the VSCode parent-folder trap and fixes, multi-repo with `--add-dir` (anchor primary + extend scope), picking the primary + orienting Claude, cross-repo guardrails, when *not* to go multi-repo + umbrella folder pattern, keyboard shortcuts (`Esc`, `Ctrl+G`, `Ctrl+O`, `Ctrl+T`, `Shift+Tab`, `⌥P`, `⌥O`, `Ctrl+B`), plan mode as default.
 
 **§3 Encoding Knowledge** *(write it down once — every session already knows)* — updating Claude's settings (`~/.claude/settings.json`, `~/.claude/CLAUDE.md`, `.claude/settings.json`, `/update-config`), global + project CLAUDE.md with real examples (gh enforcement, Jira field IDs), Skills as multi-step recipes with **`/update-jira` as THE canonical example** — 7-step breakdown shown in §3.3 and **nowhere else** in the deck, PostToolUse hook for automated self-QA.
 
-**§4 Never Watch Claude Work** — hooks architecture (Stop / Notification → `notify.sh` → `terminal-notifier` → `focus-warp-tab.sh`), hook config, `notify.sh` internals, `focus-warp-tab.sh`, the **signature demo**: 3 Warp tabs, phone notification, click → lands on right tab.
+**§4 Power Tools** — TypeScript LSP plugin (sessions that type-check themselves don't stall), local MCP servers (MongoDB, Google Sheets, Gmail, Claude-in-Chrome), MongoDB via 1Password `op://`, Claude-in-Chrome MCP (read page/console/network), Qodo PR bot (`/review`, `/agentic_review`, `/ask`).
 
-**§5 Power Tools** — TypeScript LSP plugin (sessions that type-check themselves don't stall), local MCP servers (MongoDB, Google Sheets, Gmail, Claude-in-Chrome), MongoDB via 1Password `op://`, Claude-in-Chrome MCP (read page/console/network), Qodo PR bot (`/review`, `/agentic_review`, `/ask`).
+**§5 CLI-First Workflows** — enforce "always use `gh`" in CLAUDE.md, fix PR review comments from a URL (`gh pr view`), fix failed CI from an Actions run URL (`gh run view --log-failed`). `/update-jira` closes the loop — **named, not re-explained** (it's fully covered in §3.3).
 
-**§6 CLI-First Workflows** — enforce "always use `gh`" in CLAUDE.md, fix PR review comments from a URL (`gh pr view`), fix failed CI from an Actions run URL (`gh run view --log-failed`). `/update-jira` closes the loop — **named, not re-explained** (it's fully covered in §3.3).
+**§6 Parallel Mastery** *(the payoff — everything before sets this up)* — git worktrees (separate checkout, shared `.git`; branch name = Jira ticket = Warp tab name), Claude Sessions Dashboard (`~/scripts/claude-dashboard`, React 19 + Python SSE + watchdog), utility scripts (`git-report.sh`, `git-reset-repos.sh`, `deploy-pr.sh`), Claude remote control (trigger sessions from phone/script/cron).
 
-**§7 Parallel Mastery** *(the payoff — everything before sets this up)* — git worktrees (separate checkout, shared `.git`; branch name = Jira ticket = Warp tab name), Claude Sessions Dashboard (`~/scripts/claude-dashboard`, React 19 + Python SSE + watchdog), utility scripts (`git-report.sh`, `git-reset-repos.sh`, `deploy-pr.sh`), Claude remote control (trigger sessions from phone/script/cron).
-
-**§8 Closing** — the daily parallel recipe (9 steps), before/after (3 PRs/day → 10+), Q&A.
+**§7 Closing** — the daily parallel recipe (9 steps), before/after (3 PRs/day → 10+), Q&A.
 
 ### Why §2 is long (intentional — do not compress further without explicit permission)
 
@@ -64,15 +62,13 @@ See `DEMO-PREP.md` for the full pre-lecture checklist and a demo-to-screen mappi
 
 The deck is a single `index.html`. Sections are delimited by HTML comments (`<!-- SECTION N: ... -->`). Each section has a numbered divider slide followed by content slides. Speaker notes are in `<aside class="notes">` tags — press `S` in the browser to open presenter view.
 
-Section numbers match the topics list above: §1 Efficiency & Focus, §2 Setup & Foundations, §3 Encoding Knowledge, §4 Never Watch Claude Work, §5 Power Tools, §6 CLI-First Workflows, §7 Parallel Mastery, §8 Closing.
+Section numbers match the topics list above: §1 Efficiency & Focus, §2 Setup & Foundations, §3 Encoding Knowledge, §4 Power Tools, §5 CLI-First Workflows, §6 Parallel Mastery, §7 Closing.
 
 ## Key External Files Referenced in the Lecture
 
 | File | Purpose |
 |------|---------|
 | `~/.claude/settings.json` | Hooks, plugins, permissions, defaultMode |
-| `~/.claude/hooks/notify.sh` | Notification hook — terminal-notifier + tab focus |
-| `~/.claude/hooks/focus-warp-tab.sh` | Warp tab cycling on notification click |
 | `~/.claude/skills/update-jira/SKILL.md` | 7-step Jira update skill |
 | `~/.claude/CLAUDE.md` | Global persistent instructions (gh CLI, Jira field IDs) |
 | `~/scripts/claude-dashboard/` | Dashboard app (React + Python) |

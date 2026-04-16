@@ -107,17 +107,15 @@
       <p class="small" style="margin: 0 0 0.4em 0;">Where to run, CWD hygiene, shortcuts, plan mode</p>
       <h3>3 · Encoding Knowledge</h3>
       <p class="small" style="margin: 0 0 0.4em 0;">settings.json, CLAUDE.md, skills, guardrails</p>
-      <h3>4 · Never Watch Claude Work</h3>
-      <p class="small" style="margin: 0 0 0.4em 0;">Hooks, notifications, signature demo</p>
+      <h3>4 · Power Tools</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">LSP, MCP servers, Chrome, Qodo</p>
     </div>
     <div>
-      <h3>5 · Power Tools</h3>
-      <p class="small" style="margin: 0 0 0.4em 0;">LSP, MCP servers, Chrome, Qodo</p>
-      <h3>6 · CLI-First Workflows</h3>
+      <h3>5 · CLI-First Workflows</h3>
       <p class="small" style="margin: 0 0 0.4em 0;">gh, fix PR reviews, fix failed CI</p>
-      <h3>7 · Parallel Mastery</h3>
+      <h3>6 · Parallel Mastery</h3>
       <p class="small" style="margin: 0 0 0.4em 0;">Worktrees, dashboard, remote control</p>
-      <h3>8 · Putting It Together</h3>
+      <h3>7 · Putting It Together</h3>
       <p class="small" style="margin: 0;">The daily parallel recipe</p>
     </div>
   </div>
@@ -183,7 +181,7 @@
   </table>
   <div style="margin-top: 0.6em; text-align: center;">
     <a href="https://www.youtube.com/watch?v=JQmknRaZc2M&t=96" target="_blank" style="color: var(--accent2); font-size: 0.85em;">
-      What happens when there's too much context
+      What happens when there's too much context?
     </a>
   </div>
   <aside class="notes">
@@ -221,7 +219,7 @@
     - Cache busting: Claude Code caches the conversation prefix. Churn in that prefix makes every turn pay the miss.
     - Fleet tax: every extra second per turn compounds across 5+ parallel sessions.
     This slide is the *why* behind the next slide's "many short sessions" recommendation —
-    and the *prerequisite* for §7 parallel work.
+    and the *prerequisite* for §6 parallel work.
   </aside>
 </section>
 
@@ -264,7 +262,7 @@
       2. Point at each slice — system prompt, conversation, tool results, files.
       3. Click through the expanding-context example.
     KEY POINT: Parallel short sessions aren't just safer than one long session — each starts
-    fresh with full context. This is the prerequisite mindset for §7.
+    fresh with full context. This is the prerequisite mindset for §6.
   </aside>
 </section>
 
@@ -430,8 +428,7 @@
   </div>
   <aside class="notes">
     Quick scan — don't dwell on each item. Point: Claude isn't just a chat window.
-    These are the multipliers we'll revisit in §4 (hooks/notifications),
-    §6 (CLI workflows), and §7 (parallel mastery).
+    These are the multipliers we'll revisit in §5 (CLI workflows) and §6 (parallel mastery).
     Chrome Extension also lives here — browser automation for testing/QA.
   </aside>
 </section>
@@ -1059,8 +1056,7 @@ Step 7: Return link to updated ticket</code></pre>
     </div>
     <div>
       <h3 class="green">Invocation</h3>
-      <pre style="font-size: 0.7em;"><code class="language-text">/update-jira https://github.com/
-  winn-ai/slc/pull/297</code></pre>
+      <pre style="font-size: 0.7em;"><code class="language-text">/update-jira https://github.com/winn-ai/slc/pull/297</code></pre>
       <p style="font-size: 0.68em; margin-top: 0.6em;">
         <span class="purple">Fire and forget.</span><br>
         Type it, switch to another session —<br>
@@ -1085,7 +1081,7 @@ Step 7: Return link to updated ticket</code></pre>
     KEY POINT: Skills save context AND attention. This 7-step workflow would need a paragraph of
     explanation every time. With a skill it's one command — perfect for parallel work.
 
-    CONTEXT: This is the canonical /update-jira slide. Later sections (§6 CLI workflows, §8 Recipe)
+    CONTEXT: This is the canonical /update-jira slide. Later sections (§5 CLI workflows, §7 Recipe)
     reference it by name only — no re-explanation.
   </aside>
 </section>
@@ -1123,206 +1119,20 @@ Step 7: Return link to updated ticket</code></pre>
   <div class="debrief-body">
     <p><span class="green">Write it once, every session inherits it.</span><br>
     Settings, CLAUDE.md, skills, guardrail hooks — four layers of encoded knowledge.</p>
-    <p class="bridge">Sessions now know your rules and workflows. But you're still watching them work. What if you didn't have to?</p>
+    <p class="bridge">Sessions now know your rules and workflows. The next bottleneck: capability — Claude still waits when it needs external data.</p>
   </div>
   <aside class="notes">
     Bridge: we've set up the cockpit (S1), made sessions lean (S2), encoded knowledge (S3).
-    The remaining bottleneck is you sitting there watching. Next section removes that.
+    The next bottleneck is capability — sessions still block when they need external data (MCP, LSP).
   </aside>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 4: NEVER WATCH CLAUDE WORK                           -->
+<!-- SECTION 4: POWER TOOLS                                       -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
   <div class="section-num">04</div>
-  <h2>Never Watch Claude Work</h2>
-  <p class="subtitle">The notification pipeline</p>
-</section>
-
-<section class="section-brief center-slide">
-  <h3>Coming Up</h3>
-  <div class="brief-body">
-    <p>Parallel sessions are useless if you have to babysit each one.</p>
-    <p style="margin-top: 0.8em;">By the end: Claude will notify you when it needs you — and clicking that notification will land you on the exact tab.</p>
-  </div>
-  <aside class="notes">
-    This is the section with the signature demo.
-    The hook pipeline is the mechanical answer to "how do I run 5 sessions without going crazy?"
-    Build anticipation — the demo at the end is the payoff.
-  </aside>
-</section>
-
-<!-- 4.1: Hooks Architecture -->
-<section>
-  <h2>Hooks Architecture</h2>
-  <pre style="font-size: 0.55em; text-align: center;"><code class="language-text">
-  Claude finishes task
-        │
-        ▼
-  Stop / Notification hook fires
-        │
-        ▼
-  ~/.claude/hooks/notify.sh
-        │
-        ├─── Reads JSON payload (cwd, event, message)
-        │
-        ├─── Detects terminal app (Warp / VS Code / iTerm)
-        │
-        ├─── Captures active Warp tab title
-        │
-        ▼
-  terminal-notifier
-        │
-        ├─── macOS notification with sound 🔔
-        │
-        └─── On click → focus-warp-tab.sh
-                  │
-                  └─── Cycles Warp tabs (Cmd+Shift+])
-                       until title matches → lands on correct tab
-  </code></pre>
-  <aside class="notes">
-    Walk through the architecture. Key insight: clicking the notification takes you to the EXACT
-    tab where Claude was working. This is what makes parallel sessions practical — you don't have
-    to hunt for the right tab.
-  </aside>
-</section>
-
-<!-- 4.2: Hook Configuration -->
-<section>
-  <h2>Hook Configuration</h2>
-  <pre><code class="language-json">// ~/.claude/settings.json
-{
-  "hooks": {
-    "Notification": [{
-      "matcher": "",
-      "hooks": [{
-        "type": "command",
-        "command": "~/.claude/hooks/notify.sh"
-      }]
-    }],
-    "Stop": [{
-      "matcher": "",
-      "hooks": [{
-        "type": "command",
-        "command": "~/.claude/hooks/notify.sh"
-      }]
-    }]
-  }
-}</code></pre>
-  <p style="font-size: 0.75em;">
-    <span class="blue">Notification</span> — Claude asks a question or needs input<br>
-    <span class="green">Stop</span> — Claude finished its task
-  </p>
-</section>
-
-<!-- 4.3: notify.sh -->
-<section>
-  <h2>notify.sh — The Core</h2>
-  <pre><code class="language-bash">#!/usr/bin/env bash
-PAYLOAD=$(cat)  # Claude passes JSON via stdin
-
-# Extract event type and working directory
-CWD=$(echo "$PAYLOAD" | python3 -c \
-  "import sys,json; print(json.load(sys.stdin).get('cwd',''))")
-EVENT=$(echo "$PAYLOAD" | python3 -c \
-  "import sys,json; print(json.load(sys.stdin).get('hook_event_name',''))")
-
-case "$TERM_PROGRAM" in
-  WarpTerminal)
-    # Capture tab title NOW (while in the right tab)
-    TAB_TITLE=$(osascript -e 'tell application "System Events" \
-      to tell process "Warp" to get name of front window')
-    # Save to temp file, pass to focus script on click
-    echo "$TAB_TITLE" > "$TMPFILE"
-    terminal-notifier -title "Claude Code" \
-      -message "$MESSAGE" -sound "Glass" \
-      -execute "focus-warp-tab.sh '$TMPFILE'"
-    ;;
-esac</code></pre>
-  <aside class="notes">
-    Walk through: reading the JSON payload, detecting the terminal, capturing the tab title,
-    passing it to the focus script via temp file.
-  </aside>
-</section>
-
-<!-- 4.4: focus-warp-tab.sh -->
-<section>
-  <h2>focus-warp-tab.sh</h2>
-  <pre><code class="language-bash">#!/usr/bin/env bash
-# Called when notification is clicked
-TARGET=$(cat "$TMPFILE")
-
-# Bring Warp to front
-osascript -e 'tell application "Warp" to activate'
-
-# Cycle tabs until we find the right one
-for _ in $(seq 1 30); do
-  osascript -e 'tell application "System Events" \
-    to tell process "Warp" \
-    to keystroke "]" using {command down, shift down}'
-  sleep 0.05
-  current=$(get_active_tab_title)
-  [[ "$current" == "$TARGET" ]] && exit 0
-done</code></pre>
-  <div class="highlight-box fragment" style="text-align: center;">
-    Click notification → land on the exact tab<br>
-    where Claude finished working.
-  </div>
-</section>
-
-<!-- 4.5: The Signature Demo -->
-<section class="center-slide">
-  <h2>The Signature Demo<span class="demo-tag">live demo</span><span class="demo-tag phone-tag">phone</span><span class="demo-tag laptop-tag">laptop</span></h2>
-  <br>
-  <div style="font-size: 0.85em; text-align: left; max-width: 600px; margin: 0 auto;">
-    <div class="recipe-step"><div class="recipe-num">1</div><div>Start Claude on a task in <strong>Tab A</strong></div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">2</div><div>Switch to <strong>Tab B</strong>, start a different task</div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">3</div><div>Switch to <strong>Tab C</strong>, start a third task</div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">4</div><div><strong class="green">Phone:</strong> notification arrives</div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">5</div><div>Click notification on laptop → <strong class="purple">lands on correct tab</strong></div></div>
-    <div class="recipe-step fragment"><div class="recipe-num">6</div><div>Review, approve, move on</div></div>
-  </div>
-  <aside class="notes">
-    DEMO — The Signature Moment
-
-    SCREEN: laptop (Warp, 3 named tabs) + phone (mirror to side screen)
-    SETUP: 3 Warp tabs pre-named per DEMO-PREP.md (WINN-1234 / WINN-1235 / WINN-1236).
-           Phone visible on side screen with notifications enabled.
-    ACTIONS:
-      1. In Tab A, paste a real task prompt; hit enter.
-      2. Switch to Tab B, paste a second task; hit enter.
-      3. Switch to Tab C, paste a third task; hit enter.
-      4. Wait. Narrate: "I'm now doing nothing."
-      5. When the phone notification arrives — point at it, then click the laptop notification.
-      6. Warp cycles tabs, lands on the exact completed session. React: "That's the moment."
-    KEY POINT: This is the aha moment. Parallel sessions only work if you can reliably return
-    to the right one without hunting. This is that.
-    FALLBACK: If notifications fail, switch to the dashboard (§7.3) to show the same info.
-  </aside>
-</section>
-
-<section class="section-debrief center-slide">
-  <h3>Takeaway</h3>
-  <div class="debrief-body">
-    <p><span class="green">Notifications + tab focusing = you never hunt for the right session.</span><br>
-    The notification pipeline makes parallel work feel like a queue, not chaos.</p>
-    <p class="bridge">Sessions can reach you. But can they reach your database? Your browser? Let's give them more tools.</p>
-  </div>
-  <aside class="notes">
-    Bridge: the notification pipeline solves the attention problem.
-    The next bottleneck is capability — sessions that need external data still block on you.
-    MCP and power tools solve that.
-  </aside>
-</section>
-
-<!-- ============================================================ -->
-<!-- SECTION 5: POWER TOOLS                                       -->
-<!-- ============================================================ -->
-
-<section class="section-divider center-slide">
-  <div class="section-num">05</div>
   <h2>Power Tools</h2>
   <p class="subtitle">LSP, MCP, and bots</p>
 </section>
@@ -1340,7 +1150,7 @@ done</code></pre>
   </aside>
 </section>
 
-<!-- 5.1: TypeScript LSP -->
+<!-- 4.1: TypeScript LSP -->
 <section>
   <h2>TypeScript LSP Plugin<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div class="two-col">
@@ -1385,7 +1195,7 @@ done</code></pre>
   </aside>
 </section>
 
-<!-- 5.2: Local MCP Servers -->
+<!-- 4.2: Local MCP Servers -->
 <section>
   <h2>Local MCP Servers<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <p style="font-size: 0.8em;">MCP = Model Context Protocol. Give Claude access to external services.</p>
@@ -1435,7 +1245,7 @@ done</code></pre>
   </aside>
 </section>
 
-<!-- 5.3: MCP MongoDB via 1Password -->
+<!-- 4.3: MCP MongoDB via 1Password -->
 <section>
   <h2>MCP: MongoDB via 1Password</h2>
   <pre><code class="language-json">// ~/.claude/mcp.json
@@ -1456,7 +1266,7 @@ done</code></pre>
   </div>
 </section>
 
-<!-- 5.4: MCP Claude in Chrome (moved from old §7) -->
+<!-- 4.4: MCP Claude in Chrome -->
 <section>
   <h2>MCP: Claude in Chrome<span class="demo-tag">live demo</span><span class="demo-tag chrome-tag">chrome</span></h2>
   <p style="font-size: 0.8em;">The <code>claude-in-chrome</code> MCP gives Claude eyes into your browser.</p>
@@ -1489,7 +1299,7 @@ done</code></pre>
   </aside>
 </section>
 
-<!-- 5.5: Qodo -->
+<!-- 4.5: Qodo -->
 <section>
   <h2>Prompting Qodo in PR Comments</h2>
   <div style="font-size: 0.75em;">
@@ -1526,11 +1336,11 @@ done</code></pre>
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 6: CLI-FIRST WORKFLOWS                               -->
+<!-- SECTION 5: CLI-FIRST WORKFLOWS                               -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">06</div>
+  <div class="section-num">05</div>
   <h2>CLI-First Workflows</h2>
   <p class="subtitle">The fastest path is always a CLI</p>
 </section>
@@ -1548,7 +1358,7 @@ done</code></pre>
   </aside>
 </section>
 
-<!-- 6.1: Always Prefer CLI -->
+<!-- 5.1: Always Prefer CLI -->
 <section>
   <h2>Always Prefer CLI</h2>
   <div class="two-col" style="font-size: 0.8em;">
@@ -1581,7 +1391,7 @@ gh pr diff 297
   </div>
 </section>
 
-<!-- 6.2: Fix PR Review Comments -->
+<!-- 5.2: Fix PR Review Comments -->
 <section>
   <h2>Fix PR Review Comments<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div class="highlight-box" style="text-align: center; font-size: 1.1em;">
@@ -1615,7 +1425,7 @@ gh pr diff 297
   </aside>
 </section>
 
-<!-- 6.3: Fix Failed CI Actions -->
+<!-- 5.3: Fix Failed CI Actions -->
 <section>
   <h2>Fix Failed CI Actions<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <pre><code class="language-text">"Fix the failed action:
@@ -1638,7 +1448,7 @@ gh pr diff 297
       1. Paste the run URL with "Fix the failed action: &lt;URL&gt;".
       2. Watch Claude call gh run view --log-failed, read the error, edit the file, push.
     KEY POINT: Same one-URL-in pattern as the previous slide. This is the shape of a CLI-first
-    workflow — and why parallelism (§7) actually pays off.
+    workflow — and why parallelism (§6) actually pays off.
   </aside>
 </section>
 
@@ -1658,11 +1468,11 @@ gh pr diff 297
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 7: PARALLEL MASTERY                                  -->
+<!-- SECTION 6: PARALLEL MASTERY                                  -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">07</div>
+  <div class="section-num">06</div>
   <h2>Parallel Mastery</h2>
   <p class="subtitle">The payoff — everything so far was for this</p>
 </section>
@@ -1680,7 +1490,7 @@ gh pr diff 297
   </aside>
 </section>
 
-<!-- 7.1: Worktrees -->
+<!-- 6.1: Worktrees -->
 <section>
   <h2>Git Worktrees<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div class="highlight-box" style="border-color: #ef4444; text-align: center;">
@@ -1722,7 +1532,7 @@ git worktree add ../my-repo-new-api  WINN-1235-new-api</code></pre>
   </aside>
 </section>
 
-<!-- 7.2: Dashboard -->
+<!-- 6.2: Dashboard -->
 <section>
   <h2>Claude Sessions Dashboard<span class="demo-tag">live demo</span><span class="demo-tag dashboard-tag">dashboard</span></h2>
   <div class="two-col" style="font-size: 0.75em;">
@@ -1758,7 +1568,7 @@ Python HTTP Server
 
     SCREEN: dashboard (browser tab)
     SETUP: Dashboard running (python3 ~/scripts/claude-dashboard/server/claude_dashboard.py),
-           with the 3 signature-demo sessions still live from §4.5.
+           with multiple sessions running.
     ACTIONS:
       1. Switch to the dashboard tab.
       2. Point out status indicators (thinking / waiting / idle) for each session.
@@ -1768,7 +1578,7 @@ Python HTTP Server
   </aside>
 </section>
 
-<!-- 7.3: Utility Scripts -->
+<!-- 6.3: Utility Scripts -->
 <section>
   <h2>Utility Scripts<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
   <div style="font-size: 0.75em;">
@@ -1803,7 +1613,7 @@ alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
   </aside>
 </section>
 
-<!-- 7.4: Remote Control (moved from old §7 Advanced) -->
+<!-- 6.4: Remote Control -->
 <section>
   <h2>Claude Remote Control<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span><span class="demo-tag phone-tag">phone</span></h2>
   <div class="highlight-box" style="font-size: 0.9em;">
@@ -1827,9 +1637,8 @@ alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
     ACTIONS:
       1. From phone, trigger a prompt targeting a specific Warp session.
       2. Watch it arrive on the laptop and start executing.
-    KEY POINT: Remote control closes the loop — you don't need to be at the laptop to start work
-    in your fleet. Combined with the notification pipeline (§4), the laptop becomes a worker
-    you conduct from anywhere.
+    KEY POINT: Remote control closes the loop — you don't need to be at the laptop to start work.
+    The laptop becomes a worker you conduct from anywhere.
   </aside>
 </section>
 
@@ -1847,11 +1656,11 @@ alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 8: CLOSING                                           -->
+<!-- SECTION 7: CLOSING                                           -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
-  <div class="section-num">08</div>
+  <div class="section-num">07</div>
   <h2>Putting It All Together</h2>
   <p class="subtitle">The daily parallel workflow</p>
 </section>
