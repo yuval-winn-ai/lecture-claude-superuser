@@ -101,10 +101,10 @@
   <h2>What We'll Cover</h2>
   <div class="two-col" style="font-size: 0.72em;">
     <div>
-      <h3>1 · Setup &amp; Foundations</h3>
-      <p class="small" style="margin: 0 0 0.4em 0;">Where to run, CWD hygiene, shortcuts, plan mode</p>
-      <h3>2 · Efficiency &amp; Focus</h3>
+      <h3>1 · Efficiency &amp; Focus</h3>
       <p class="small" style="margin: 0 0 0.4em 0;">Token economics, context window, "interview me"</p>
+      <h3>2 · Setup &amp; Foundations</h3>
+      <p class="small" style="margin: 0 0 0.4em 0;">Where to run, CWD hygiene, shortcuts, plan mode</p>
       <h3>3 · Encoding Knowledge</h3>
       <p class="small" style="margin: 0 0 0.4em 0;">settings.json, CLAUDE.md, skills, guardrails</p>
       <h3>4 · Never Watch Claude Work</h3>
@@ -128,11 +128,207 @@
 </section>
 
 <!-- ============================================================ -->
-<!-- SECTION 1: SETUP &amp; FOUNDATIONS                              -->
+<!-- SECTION 1: EFFICIENCY &amp; FOCUS                               -->
 <!-- ============================================================ -->
 
 <section class="section-divider center-slide">
   <div class="section-num">01</div>
+  <h2>Efficiency &amp; Focus</h2>
+  <p class="subtitle">Make one session lean — then multiply</p>
+</section>
+
+<section class="section-brief center-slide">
+  <h3>Coming Up</h3>
+  <div class="brief-body">
+    <p>Every wasted token in one session is a tax on your entire fleet.</p>
+    <p style="margin-top: 0.8em;">By the end: you'll know how to keep sessions short, focused, and cheap — the prerequisite for running many at once.</p>
+  </div>
+  <aside class="notes">
+    Short section — only 4 slides. Frame it as the economic argument for parallelism.
+    One bloated session isn't just slow, it eats into your budget for the other four.
+  </aside>
+</section>
+
+<!-- 2.1: File References & Context (merged) -->
+<section>
+  <h2>File References &amp; Context</h2>
+  <p style="font-size: 0.78em;">The IDE tells Claude <em>what you're looking at</em>. <code>@filename</code> inlines the <em>whole file</em>.</p>
+  <div class="two-col" style="margin-bottom: 0.6em;">
+    <div>
+      <h3 class="red">Wasteful</h3>
+      <pre><code class="language-text">@src/services/auth.ts
+
+(sends entire file — 500 lines
+ — wastes tokens)</code></pre>
+    </div>
+    <div>
+      <h3 class="green">Surgical</h3>
+      <pre><code class="language-text">"Read lines 40-80 of
+ src/services/auth.ts"
+
+(reads only what's needed)</code></pre>
+    </div>
+  </div>
+  <table style="font-size: 0.6em;">
+    <thead>
+      <tr><th>IDE signal</th><th>What's sent</th><th>Cost</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Active file / cursor</td><td>Path + position</td><td class="green">Tiny (pointer)</td></tr>
+      <tr><td>Selection</td><td>Selected text inline</td><td class="green">Small</td></tr>
+      <tr><td>Open tabs</td><td>List of paths</td><td class="green">Tiny</td></tr>
+      <tr><td>LSP diagnostics</td><td>Errors/warnings in view</td><td class="green">Small</td></tr>
+      <tr><td><code>@filename</code> in prompt</td><td class="red">Entire file inlined</td><td class="red">Can be huge</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 0.6em; text-align: center;">
+    <a href="https://www.youtube.com/watch?v=JQmknRaZc2M&t=96" target="_blank" style="color: var(--accent2); font-size: 0.85em;">
+      What happens when there's too much context
+    </a>
+  </div>
+  <aside class="notes">
+    Common misconception: the VSCode extension ships the whole file on every turn. It doesn't —
+    it sends a lightweight pointer. Claude decides what to Read. The @ shortcut is the wasteful
+    pattern — it inlines the full file. Use line ranges or let the IDE pointer do the work.
+  </aside>
+</section>
+
+<!-- 2.2: Why Token Waste Hurts -->
+<section>
+  <h2>Why Token Waste Hurts</h2>
+  <p style="font-size: 0.82em;">One session's bloat taxes the whole fleet.</p>
+  <table style="font-size: 0.66em;">
+    <thead>
+      <tr><th>Cost</th><th>What actually happens</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Usage limits</td><td>Fewer parallel sessions before you're rate-limited</td></tr>
+      <tr><td>Latency</td><td>Longer turns &times; many sessions = fewer iterations per hour</td></tr>
+      <tr><td class="red">Attention dilution</td><td>Quality drops <em>before</em> the window fills — key details get "lost in the middle"</td></tr>
+      <tr><td class="red">Forced compaction</td><td>Claude summarizes older turns — exact paths, line numbers, and reasoning get lost</td></tr>
+      <tr><td>Cache busting</td><td>Noisy tool output breaks the prompt cache — every turn after costs more</td></tr>
+      <tr><td>Stall risk</td><td>Bloated sessions stall mid-task — rescue costs more than scoping to finish clean</td></tr>
+    </tbody>
+  </table>
+  <div class="highlight-box fragment" style="margin-top: 12px; font-size: 0.85em; text-align: center;">
+    Short, focused sessions aren't just safer — they're <span class="green">strictly higher throughput</span>.
+  </div>
+  <aside class="notes">
+    The obvious costs — usage limits, latency — are the ones everyone names first.
+    The less obvious ones matter more:
+    - Attention dilution: model quality degrades with noise well before hitting the window.
+    - Compaction is lossy. Post-compaction sessions often repeat mistakes the pre-compaction session already learned from.
+    - Cache busting: Claude Code caches the conversation prefix. Churn in that prefix makes every turn pay the miss.
+    - Fleet tax: every extra second per turn compounds across 5+ parallel sessions.
+    This slide is the *why* behind the next slide's "many short sessions" recommendation —
+    and the *prerequisite* for §7 parallel work.
+  </aside>
+</section>
+
+<!-- 2.3: Context Window -->
+<section>
+  <h2>Context Window<span class="demo-tag">live demo</span><span class="demo-tag chrome-tag">chrome</span></h2>
+  <div class="two-col">
+    <div>
+      <h3 class="red">One mega-session</h3>
+      <ul>
+        <li>Context fills up</li>
+        <li>Claude starts forgetting</li>
+        <li>Responses degrade</li>
+        <li>You have to repeat yourself</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="green">Many short sessions</h3>
+      <ul>
+        <li>Each session is focused</li>
+        <li>No context pressure</li>
+        <li>Run 5+ in parallel</li>
+        <li>Full context every time</li>
+      </ul>
+    </div>
+  </div>
+  <div class="highlight-box fragment" style="margin-top: 1em; text-align: center;">
+    <a href="https://docs.anthropic.com/en/docs/claude-code/context-window" style="color: var(--accent2); font-size: 1.1em;">
+      docs.anthropic.com/en/docs/claude-code/context-window
+    </a><br>
+    <span style="font-size: 0.8em; color: var(--accent3);">Interactive context window visualizer</span>
+  </div>
+  <aside class="notes">
+    DEMO — Context Window
+
+    SCREEN: chrome (docs page projected)
+    SETUP: Tab pre-loaded on docs.anthropic.com context-window page.
+    ACTIONS:
+      1. Switch to the browser, show the interactive visualizer.
+      2. Point at each slice — system prompt, conversation, tool results, files.
+      3. Click through the expanding-context example.
+    KEY POINT: Parallel short sessions aren't just safer than one long session — each starts
+    fresh with full context. This is the prerequisite mindset for §7.
+  </aside>
+</section>
+
+<!-- 2.4: Interview Me (merged) -->
+<section>
+  <h2>"Interview Me"<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
+  <div class="highlight-box" style="font-size: 1em; text-align: center;">
+    Instead of writing a long spec,<br>let Claude ask the questions.
+  </div>
+  <div class="two-col" style="margin-top: 0.8em;">
+    <div>
+      <h3 class="blue">Before coding</h3>
+      <pre style="font-size: 0.7em;"><code class="language-text">"I need a new API endpoint for user
+ notifications. Interview me about the
+ requirements before writing any code."</code></pre>
+      <p style="font-size: 0.7em; color: var(--accent2); margin-top: 0.4em;">
+        Claude asks 3-4 targeted questions —<br>faster than writing a spec.
+      </p>
+    </div>
+    <div>
+      <h3 class="purple">Before a workaround</h3>
+      <pre style="font-size: 0.7em;"><code class="language-text">"Don't work around this. Interview me
+ about what I actually need — there
+ might be a simpler approach we're
+ both missing."</code></pre>
+      <p style="font-size: 0.7em; color: var(--accent); margin-top: 0.4em;">
+        Prevents rabbit holes —<br>especially in sessions you can't watch.
+      </p>
+    </div>
+  </div>
+  <aside class="notes">
+    DEMO — Interview Me
+
+    SCREEN: laptop (Warp)
+    SETUP: New Claude session in a real repo.
+    ACTIONS:
+      1. Paste the "before coding" prompt. Let Claude ask 3-4 questions.
+      2. Answer briefly, let it produce a plan.
+      3. If time: show the "before workaround" variant on a fake hack suggestion.
+    KEY POINT: Claude asks the RIGHT questions — saving you the work of writing a spec, and
+    avoiding wrong turns when you're not watching.
+  </aside>
+</section>
+
+<section class="section-debrief center-slide">
+  <h3>Takeaway</h3>
+  <div class="debrief-body">
+    <p><span class="green">Short sessions, surgical context, let Claude ask the questions.</span><br>
+    Lean sessions are faster, cheaper, and scale to parallel.</p>
+    <p class="bridge">But efficiency starts earlier — with where you launch Claude. A wrong cockpit wastes tokens before you type a word.</p>
+  </div>
+  <aside class="notes">
+    Bridge: token discipline inside a session only works if the session started in the right place.
+    Next section is the cockpit — CWD hygiene, terminal choice, plan mode.
+    Get the cockpit wrong and every efficiency trick we just covered leaks.
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SETUP &amp; FOUNDATIONS                              -->
+<!-- ============================================================ -->
+
+<section class="section-divider center-slide">
+  <div class="section-num">02</div>
   <h2>Setup &amp; Foundations</h2>
   <p class="subtitle">Your cockpit</p>
 </section>
@@ -329,7 +525,7 @@
   <aside class="notes">
     Frame the deep-dive. This is where a lot of the audience pushes back — "I like VSCode,
     why should I change?" The next slides don't argue aesthetics; they show what silently
-    stops working when CWD is wrong. By the end of §1, they should be convinced that Warp
+    stops working when CWD is wrong. By the end of §2, they should be convinced that Warp
     (or iTerm2) isn't a preference — it's the default that makes the rest of the talk work.
   </aside>
 </section>
@@ -395,7 +591,7 @@
     fails, and nobody thinks to check CWD.
 
     This table is the evidence behind the "1 Claude = 1 project root" rule. Everything else in
-    §1 builds on this.
+    §2 builds on this.
   </aside>
 </section>
 
@@ -430,7 +626,7 @@ code ~/work     ← opens parent</code></pre>
     </div>
   </div>
   <aside class="notes">
-    If people remember one thing from §1, this is it.
+    If people remember one thing from §2, this is it.
     Multi-root workspaces are the decent compromise for VSCode addicts, but once you have
     5+ parallel sessions, separate Warp tabs each cd'd into their repo wins every time.
     This is the moment to lean into the Warp-promotion argument: the terminal is not a legacy
@@ -766,208 +962,12 @@ making any changes.</code></pre>
   <div class="debrief-body">
     <p><span class="green">One Claude = one project root.</span><br>
     Warp or iTerm2 for parallel tabs. Plan mode as the default gate.</p>
-    <p class="bridge">Your cockpit is ready. Now let's make each session lean enough to multiply.</p>
+    <p class="bridge">Your cockpit is ready. Next: stop repeating yourself every session — teach Claude once.</p>
   </div>
   <aside class="notes">
     Recap: CWD hygiene, terminal choice, plan mode. Three things.
-    Bridge: we can now run sessions in the right place — next question is
-    how to keep each session efficient so running five doesn't cost five times as much.
-  </aside>
-</section>
-
-<!-- ============================================================ -->
-<!-- SECTION 2: EFFICIENCY &amp; FOCUS                               -->
-<!-- ============================================================ -->
-
-<section class="section-divider center-slide">
-  <div class="section-num">02</div>
-  <h2>Efficiency &amp; Focus</h2>
-  <p class="subtitle">Make one session lean — then multiply</p>
-</section>
-
-<section class="section-brief center-slide">
-  <h3>Coming Up</h3>
-  <div class="brief-body">
-    <p>Every wasted token in one session is a tax on your entire fleet.</p>
-    <p style="margin-top: 0.8em;">By the end: you'll know how to keep sessions short, focused, and cheap — the prerequisite for running many at once.</p>
-  </div>
-  <aside class="notes">
-    Short section — only 4 slides. Frame it as the economic argument for parallelism.
-    One bloated session isn't just slow, it eats into your budget for the other four.
-  </aside>
-</section>
-
-<!-- 2.1: File References & Context (merged) -->
-<section>
-  <h2>File References &amp; Context</h2>
-  <p style="font-size: 0.78em;">The IDE tells Claude <em>what you're looking at</em>. <code>@filename</code> inlines the <em>whole file</em>.</p>
-  <div class="two-col" style="margin-bottom: 0.6em;">
-    <div>
-      <h3 class="red">Wasteful</h3>
-      <pre><code class="language-text">@src/services/auth.ts
-
-(sends entire file — 500 lines
- — wastes tokens)</code></pre>
-    </div>
-    <div>
-      <h3 class="green">Surgical</h3>
-      <pre><code class="language-text">"Read lines 40-80 of
- src/services/auth.ts"
-
-(reads only what's needed)</code></pre>
-    </div>
-  </div>
-  <table style="font-size: 0.6em;">
-    <thead>
-      <tr><th>IDE signal</th><th>What's sent</th><th>Cost</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Active file / cursor</td><td>Path + position</td><td class="green">Tiny (pointer)</td></tr>
-      <tr><td>Selection</td><td>Selected text inline</td><td class="green">Small</td></tr>
-      <tr><td>Open tabs</td><td>List of paths</td><td class="green">Tiny</td></tr>
-      <tr><td>LSP diagnostics</td><td>Errors/warnings in view</td><td class="green">Small</td></tr>
-      <tr><td><code>@filename</code> in prompt</td><td class="red">Entire file inlined</td><td class="red">Can be huge</td></tr>
-    </tbody>
-  </table>
-  <div style="margin-top: 0.6em; text-align: center;">
-    <a href="https://www.youtube.com/watch?v=JQmknRaZc2M&t=96" target="_blank" style="color: var(--accent2); font-size: 0.85em;">
-      What happens when there's too much context
-    </a>
-  </div>
-  <aside class="notes">
-    Common misconception: the VSCode extension ships the whole file on every turn. It doesn't —
-    it sends a lightweight pointer. Claude decides what to Read. The @ shortcut is the wasteful
-    pattern — it inlines the full file. Use line ranges or let the IDE pointer do the work.
-  </aside>
-</section>
-
-<!-- 2.2: Why Token Waste Hurts -->
-<section>
-  <h2>Why Token Waste Hurts</h2>
-  <p style="font-size: 0.82em;">One session's bloat taxes the whole fleet.</p>
-  <table style="font-size: 0.66em;">
-    <thead>
-      <tr><th>Cost</th><th>What actually happens</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Usage limits</td><td>Fewer parallel sessions before you're rate-limited</td></tr>
-      <tr><td>Latency</td><td>Longer turns &times; many sessions = fewer iterations per hour</td></tr>
-      <tr><td class="red">Attention dilution</td><td>Quality drops <em>before</em> the window fills — key details get "lost in the middle"</td></tr>
-      <tr><td class="red">Forced compaction</td><td>Claude summarizes older turns — exact paths, line numbers, and reasoning get lost</td></tr>
-      <tr><td>Cache busting</td><td>Noisy tool output breaks the prompt cache — every turn after costs more</td></tr>
-      <tr><td>Stall risk</td><td>Bloated sessions stall mid-task — rescue costs more than scoping to finish clean</td></tr>
-    </tbody>
-  </table>
-  <div class="highlight-box fragment" style="margin-top: 12px; font-size: 0.85em; text-align: center;">
-    Short, focused sessions aren't just safer — they're <span class="green">strictly higher throughput</span>.
-  </div>
-  <aside class="notes">
-    The obvious costs — usage limits, latency — are the ones everyone names first.
-    The less obvious ones matter more:
-    - Attention dilution: model quality degrades with noise well before hitting the window.
-    - Compaction is lossy. Post-compaction sessions often repeat mistakes the pre-compaction session already learned from.
-    - Cache busting: Claude Code caches the conversation prefix. Churn in that prefix makes every turn pay the miss.
-    - Fleet tax: every extra second per turn compounds across 5+ parallel sessions.
-    This slide is the *why* behind the next slide's "many short sessions" recommendation —
-    and the *prerequisite* for §7 parallel work.
-  </aside>
-</section>
-
-<!-- 2.3: Context Window -->
-<section>
-  <h2>Context Window<span class="demo-tag">live demo</span><span class="demo-tag chrome-tag">chrome</span></h2>
-  <div class="two-col">
-    <div>
-      <h3 class="red">One mega-session</h3>
-      <ul>
-        <li>Context fills up</li>
-        <li>Claude starts forgetting</li>
-        <li>Responses degrade</li>
-        <li>You have to repeat yourself</li>
-      </ul>
-    </div>
-    <div>
-      <h3 class="green">Many short sessions</h3>
-      <ul>
-        <li>Each session is focused</li>
-        <li>No context pressure</li>
-        <li>Run 5+ in parallel</li>
-        <li>Full context every time</li>
-      </ul>
-    </div>
-  </div>
-  <div class="highlight-box fragment" style="margin-top: 1em; text-align: center;">
-    <a href="https://docs.anthropic.com/en/docs/claude-code/context-window" style="color: var(--accent2); font-size: 1.1em;">
-      docs.anthropic.com/en/docs/claude-code/context-window
-    </a><br>
-    <span style="font-size: 0.8em; color: var(--accent3);">Interactive context window visualizer</span>
-  </div>
-  <aside class="notes">
-    DEMO — Context Window
-
-    SCREEN: chrome (docs page projected)
-    SETUP: Tab pre-loaded on docs.anthropic.com context-window page.
-    ACTIONS:
-      1. Switch to the browser, show the interactive visualizer.
-      2. Point at each slice — system prompt, conversation, tool results, files.
-      3. Click through the expanding-context example.
-    KEY POINT: Parallel short sessions aren't just safer than one long session — each starts
-    fresh with full context. This is the prerequisite mindset for §7.
-  </aside>
-</section>
-
-<!-- 2.4: Interview Me (merged) -->
-<section>
-  <h2>"Interview Me"<span class="demo-tag">live demo</span><span class="demo-tag laptop-tag">laptop</span></h2>
-  <div class="highlight-box" style="font-size: 1em; text-align: center;">
-    Instead of writing a long spec,<br>let Claude ask the questions.
-  </div>
-  <div class="two-col" style="margin-top: 0.8em;">
-    <div>
-      <h3 class="blue">Before coding</h3>
-      <pre style="font-size: 0.7em;"><code class="language-text">"I need a new API endpoint for user
- notifications. Interview me about the
- requirements before writing any code."</code></pre>
-      <p style="font-size: 0.7em; color: var(--accent2); margin-top: 0.4em;">
-        Claude asks 3-4 targeted questions —<br>faster than writing a spec.
-      </p>
-    </div>
-    <div>
-      <h3 class="purple">Before a workaround</h3>
-      <pre style="font-size: 0.7em;"><code class="language-text">"Don't work around this. Interview me
- about what I actually need — there
- might be a simpler approach we're
- both missing."</code></pre>
-      <p style="font-size: 0.7em; color: var(--accent); margin-top: 0.4em;">
-        Prevents rabbit holes —<br>especially in sessions you can't watch.
-      </p>
-    </div>
-  </div>
-  <aside class="notes">
-    DEMO — Interview Me
-
-    SCREEN: laptop (Warp)
-    SETUP: New Claude session in a real repo.
-    ACTIONS:
-      1. Paste the "before coding" prompt. Let Claude ask 3-4 questions.
-      2. Answer briefly, let it produce a plan.
-      3. If time: show the "before workaround" variant on a fake hack suggestion.
-    KEY POINT: Claude asks the RIGHT questions — saving you the work of writing a spec, and
-    avoiding wrong turns when you're not watching.
-  </aside>
-</section>
-
-<section class="section-debrief center-slide">
-  <h3>Takeaway</h3>
-  <div class="debrief-body">
-    <p><span class="green">Short sessions, surgical context, let Claude ask the questions.</span><br>
-    Lean sessions are faster, cheaper, and scale to parallel.</p>
-    <p class="bridge">But you're still repeating yourself every session. What if Claude already knew?</p>
-  </div>
-  <aside class="notes">
-    Bridge: efficiency is about what you do in the session.
-    Next section is about what the session already knows before you type anything.
-    That's the shift from per-session effort to per-project configuration.
+    Bridge: with the cockpit right, the next question is what Claude already knows before you type anything —
+    per-project configuration instead of per-session effort.
   </aside>
 </section>
 

@@ -28,9 +28,9 @@ The deck has **9 sections** (Section 0 opener + §1–§8). Each section below m
 
 **§0 Opening Hook** — title, "The Problem" (one session at a time), roadmap.
 
-**§1 Setup & Foundations** *(intentionally deep — see note below)* — where to run (Warp/Terminal.app/VSCode/iTerm tradeoffs), the "1 Claude = 1 project root" rule, systems that silently fail under wrong CWD (CLAUDE.md, settings.json, .mcp.json, skills, auto-memory, Glob scope, git, Bash blast radius), the VSCode parent-folder trap and fixes, multi-repo with `--add-dir` (anchor primary + extend scope), picking the primary + orienting Claude, cross-repo guardrails, when *not* to go multi-repo + umbrella folder pattern, keyboard shortcuts (`Esc`, `Ctrl+G`, `Ctrl+O`, `Ctrl+T`, `Shift+Tab`, `⌥P`, `⌥O`, `Ctrl+B`), plan mode as default.
+**§1 Efficiency & Focus** *(prerequisite for parallelism — must come before §7)* — `@filename` vs line-range file references, how the VSCode extension sends a lightweight pointer (not the full file), token economics (usage limits, attention dilution, forced compaction, cache busting, stall risk), context window visualizer (`docs.anthropic.com/en/docs/claude-code/context-window`), "interview me" pattern for both specs and avoiding workarounds. Placed first to establish *why* tokens matter before §2 argues *where* you launch Claude.
 
-**§2 Efficiency & Focus** *(prerequisite for parallelism — must come before §7)* — `@filename` vs line-range file references, how the VSCode extension sends a lightweight pointer (not the full file), token economics (usage limits, attention dilution, forced compaction, cache busting, stall risk), context window visualizer (`docs.anthropic.com/en/docs/claude-code/context-window`), "interview me" pattern for both specs and avoiding workarounds.
+**§2 Setup & Foundations** *(intentionally deep — see note below)* — where to run (Warp/Terminal.app/VSCode/iTerm tradeoffs), the "1 Claude = 1 project root" rule, systems that silently fail under wrong CWD (CLAUDE.md, settings.json, .mcp.json, skills, auto-memory, Glob scope, git, Bash blast radius), the VSCode parent-folder trap and fixes, multi-repo with `--add-dir` (anchor primary + extend scope), picking the primary + orienting Claude, cross-repo guardrails, when *not* to go multi-repo + umbrella folder pattern, keyboard shortcuts (`Esc`, `Ctrl+G`, `Ctrl+O`, `Ctrl+T`, `Shift+Tab`, `⌥P`, `⌥O`, `Ctrl+B`), plan mode as default.
 
 **§3 Encoding Knowledge** *(write it down once — every session already knows)* — updating Claude's settings (`~/.claude/settings.json`, `~/.claude/CLAUDE.md`, `.claude/settings.json`, `/update-config`), global + project CLAUDE.md with real examples (gh enforcement, Jira field IDs), Skills as multi-step recipes with **`/update-jira` as THE canonical example** — 7-step breakdown shown in §3.3 and **nowhere else** in the deck, PostToolUse hook for automated self-QA.
 
@@ -44,15 +44,15 @@ The deck has **9 sections** (Section 0 opener + §1–§8). Each section below m
 
 **§8 Closing** — the daily parallel recipe (9 steps), before/after (3 PRs/day → 10+), Q&A.
 
-### Why §1 is long (intentional — do not compress further without explicit permission)
+### Why §2 is long (intentional — do not compress further without explicit permission)
 
-The CWD / VSCode-parent-folder / cross-repo material in §1 is **intentionally ~11 slides deep**. This is a contested topic in the audience: many devs default to launching Claude from a parent folder in VSCode out of habit. The lecture uses this section to argue that working correctly with Claude matters — and specifically that a real terminal (**Warp** or iTerm2) is the better default for parallel work.
+The CWD / VSCode-parent-folder / cross-repo material in §2 is **intentionally ~11 slides deep**. This is a contested topic in the audience: many devs default to launching Claude from a parent folder in VSCode out of habit. The lecture uses this section to argue that working correctly with Claude matters — and specifically that a real terminal (**Warp** or iTerm2) is the better default for parallel work.
 
 Load-bearing slides in the argument:
-- **§1.3 "Why This Matters"** — explicit runway framing the deep-dive as contested territory
-- **§1.4 "Everything Keys Off the Working Directory"** — the authoritative table enumerating every system that silently fails under wrong CWD (merged from two near-identical tables in the old deck)
-- **§1.5 "The VSCode Parent-Folder Trap"** — carries the Warp-as-better-default pitch ("VSCode as viewer, Warp for Claude — scales best to many parallel sessions")
-- **§1.6 "The Silent Failure Mode"** — symptoms the audience will recognize from their own experience
+- **§2.3 "Why This Matters"** — explicit runway framing the deep-dive as contested territory
+- **§2.4 "Everything Keys Off the Working Directory"** — the authoritative table enumerating every system that silently fails under wrong CWD (merged from two near-identical tables in the old deck)
+- **§2.5 "The VSCode Parent-Folder Trap"** — carries the Warp-as-better-default pitch ("VSCode as viewer, Warp for Claude — scales best to many parallel sessions")
+- **§2.6 "The Silent Failure Mode"** — symptoms the audience will recognize from their own experience
 
 Do not trim this section further. Merge near-duplicate content where genuinely redundant, but preserve the argument's depth.
 
@@ -64,7 +64,7 @@ See `DEMO-PREP.md` for the full pre-lecture checklist and a demo-to-screen mappi
 
 The deck is a single `index.html`. Sections are delimited by HTML comments (`<!-- SECTION N: ... -->`). Each section has a numbered divider slide followed by content slides. Speaker notes are in `<aside class="notes">` tags — press `S` in the browser to open presenter view.
 
-Section numbers match the topics list above: §1 Setup & Foundations, §2 Efficiency & Focus, §3 Encoding Knowledge, §4 Never Watch Claude Work, §5 Power Tools, §6 CLI-First Workflows, §7 Parallel Mastery, §8 Closing.
+Section numbers match the topics list above: §1 Efficiency & Focus, §2 Setup & Foundations, §3 Encoding Knowledge, §4 Never Watch Claude Work, §5 Power Tools, §6 CLI-First Workflows, §7 Parallel Mastery, §8 Closing.
 
 ## Key External Files Referenced in the Lecture
 
