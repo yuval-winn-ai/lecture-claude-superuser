@@ -37,7 +37,7 @@ Then open <http://localhost:3000>. No build step — the deck is a single `index
 4. **§3 Encoding Knowledge** — settings, `CLAUDE.md`, Skills, hooks
 5. **§4 Power Tools** — LSP, MCP servers, Claude-in-Chrome, Qodo
 6. **§5 CLI-First Workflows** — `gh` for PRs and CI, `/update-jira`
-7. **§6 Parallel Mastery** — git worktrees, the [Claude Sessions Dashboard](https://github.com/yuval-winn-ai/claude-dashboard), remote control
+7. **§6 Parallel Mastery** — git worktrees, the [Claude Sessions Dashboard](https://github.com/yuval-yssak/claude-dashboard), remote control
 8. **§7 Closing** — the daily parallel recipe
 
 ## Editing
