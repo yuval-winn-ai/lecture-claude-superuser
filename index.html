@@ -63,6 +63,10 @@
     .reveal section.section-debrief h3 { font-size: 0.9em; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.6em; }
     .reveal section.section-debrief .debrief-body { font-size: 0.85em; color: #d4d4d8; max-width: 700px; margin: 0 auto; line-height: 1.5; }
     .reveal section.section-debrief .bridge { margin-top: 1.2em; font-size: 0.78em; color: var(--accent2); font-style: italic; }
+    /* Speaker-notes time-flow marker. Inline styles on each instance carry it into the */
+    /* reveal.js presenter popup (separate window, no access to this stylesheet). */
+    .timeflow { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; line-height: 1.4; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; }
+    .timeflow .tf-through { font-weight: 600; color: #333; }
   </style>
 </head>
 <body>
@@ -77,6 +81,7 @@
   <h1>Claude Code<br>Super User</h1>
   <p class="subtitle">Working in parallel. Shipping 3x faster.</p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">0:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">0:30</span></div>
     Welcome. Today we're going to completely change how you use Claude Code.
     Most of you use it one session at a time. By the end of this talk, you'll be running 5+ sessions simultaneously.
   </aside>
@@ -92,6 +97,7 @@
   <br>
   <p class="fragment" style="text-align: center; font-size: 1.3em; color: var(--accent);">What if you ran 5 simultaneously?</p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">0:30</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">1:30</span></div>
     This is the core question. Every feature I show today is in service of this goal:
     making you comfortable running many Claude sessions at once without losing control.
   </aside>
@@ -120,6 +126,7 @@
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">1:30</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">2:00</span></div>
     Roadmap. Earlier sections teach single-session hygiene and efficiency —
     those are the prerequisites for parallelism at the end.
   </aside>
@@ -142,6 +149,7 @@
     <p style="margin-top: 0.8em;">By the end: you'll know how to keep sessions short, focused, and cheap — the prerequisite for running many at once.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">2:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">2:30</span></div>
     Short section — only 4 slides. Frame it as the economic argument for parallelism.
     One bloated session isn't just slow, it eats into your budget for the other four.
   </aside>
@@ -185,6 +193,7 @@
     </a>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">2:30</span> · slide <span class="tf-slide">3:00</span> · through <span class="tf-through">5:30</span></div>
     Common misconception: the VSCode extension ships the whole file on every turn. It doesn't —
     it sends a lightweight pointer. Claude decides what to Read. The @ shortcut is the wasteful
     pattern — it inlines the full file. Use line ranges or let the IDE pointer do the work.
@@ -212,6 +221,7 @@
     Short, focused sessions aren't just safer — they're <span class="green">strictly higher throughput</span>.
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">5:30</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">6:30</span></div>
     The obvious costs — usage limits, latency — are the ones everyone names first.
     The less obvious ones matter more:
     - Attention dilution: model quality degrades with noise well before hitting the window.
@@ -253,6 +263,7 @@
     <span style="font-size: 0.8em; color: var(--accent3);">Interactive context window visualizer</span>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">6:30</span> · slide <span class="tf-slide">3:00</span> · through <span class="tf-through">9:30</span></div>
     DEMO — Context Window
 
     SCREEN: chrome (docs page projected)
@@ -294,6 +305,7 @@
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">9:30</span> · slide <span class="tf-slide">2:00</span> · through <span class="tf-through">11:30</span></div>
     DEMO — Interview Me
 
     SCREEN: laptop (Warp)
@@ -315,6 +327,7 @@
     <p class="bridge">But efficiency starts earlier — with where you launch Claude. A wrong cockpit wastes tokens before you type a word.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">11:30</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">12:00</span></div>
     Bridge: token discipline inside a session only works if the session started in the right place.
     Next section is the cockpit — CWD hygiene, terminal choice, plan mode.
     Get the cockpit wrong and every efficiency trick we just covered leaks.
@@ -338,6 +351,7 @@
     <p style="margin-top: 0.8em;">By the end of this section: you'll have a cockpit that scales to 5+ parallel sessions without silent failures.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">12:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">12:30</span></div>
     Quick framing: this is the longest section (13 slides) and it's dense on purpose.
     If they get the CWD hygiene right, everything else in the talk works.
     If they don't, nothing does. Say that out loud.
@@ -385,6 +399,7 @@
     <br>Sessions are portable: <code>--teleport</code>, <code>/desktop</code>, Remote Control.
   </p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">12:30</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">13:30</span></div>
     Frame: "Claude exists on a spectrum — you pick the point that matches your task."
     Walk top to bottom. Emphasize that session portability means you're not locked in —
     start on CLI, continue on phone, or hand off to Desktop for visual diff review.
@@ -427,6 +442,7 @@
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">13:30</span> · slide <span class="tf-slide">0:45</span> · through <span class="tf-through">14:15</span></div>
     Quick scan — don't dwell on each item. Point: Claude isn't just a chat window.
     These are the multipliers we'll revisit in §5 (CLI workflows) and §6 (parallel mastery).
     Chrome Extension also lives here — browser automation for testing/QA.
@@ -473,6 +489,7 @@
     </tbody>
   </table>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">14:15</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">15:15</span></div>
     For THIS talk — parallel mastery — we'll focus on Terminal.
     Sections 4–7 build the cockpit that makes terminal the best surface
     for running 5+ sessions: hooks for notifications, MCP for tools,
@@ -500,6 +517,7 @@
     <p style="margin: 0.2em 0 0;">No human in the loop — PR review, issue triage, scheduled audits</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">15:15</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">15:45</span></div>
     Each surface has a sweet spot. This talk teaches the terminal path because
     that's where parallel mastery lives. But if you only need one task done well,
     Desktop or VS Code is great. And for things that should just happen on their own,
@@ -520,6 +538,7 @@
     — starting with a real terminal — is the foundation for everything else.
   </p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">15:45</span> · slide <span class="tf-slide">0:45</span> · through <span class="tf-through">16:30</span></div>
     Frame the deep-dive. This is where a lot of the audience pushes back — "I like VSCode,
     why should I change?" The next slides don't argue aesthetics; they show what silently
     stops working when CWD is wrong. By the end of §2, they should be convinced that Warp
@@ -582,6 +601,7 @@
     <strong>Rule for parallel sessions:</strong> 1 Claude process = 1 project root.
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">16:30</span> · slide <span class="tf-slide">1:45</span> · through <span class="tf-through">18:15</span></div>
     Walk down the table row by row. Make MCP vivid — the session can't reach MongoDB because
     .mcp.json didn't load. Memory too — a session that "remembers" in the right CWD writes to
     an orphan namespace in the parent. The git row is the one that bites fastest: gh pr view
@@ -623,6 +643,7 @@ code ~/work     ← opens parent</code></pre>
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">18:15</span> · slide <span class="tf-slide">1:30</span> · through <span class="tf-through">19:45</span></div>
     If people remember one thing from §2, this is it.
     Multi-root workspaces are the decent compromise for VSCode addicts, but once you have
     5+ parallel sessions, separate Warp tabs each cd'd into their repo wins every time.
@@ -662,6 +683,7 @@ code ~/work     ← opens parent</code></pre>
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">19:45</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">20:45</span></div>
     This is the most dangerous property. No error. No warning. Just quiet degradation and you
     repeating instructions you thought were baked in. Train the audience: at the start of any
     real work, ask Claude what its CWD is and what CLAUDE.md files loaded. Make this a reflex.
@@ -695,6 +717,7 @@ claude \
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">20:45</span> · slide <span class="tf-slide">0:45</span> · through <span class="tf-through">21:30</span></div>
     Microservices setups hit this constantly. Temptation: launch from parent. Resist.
     Next slide shows the right shape — pin CWD to one project, grant explicit access to peers.
   </aside>
@@ -730,6 +753,7 @@ claude \
     Glob / Grep / Read / Bash see only listed dirs — not the 20-repo parent.
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">21:30</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">22:30</span></div>
     Mental model: you're not moving CWD up, you're adding peer dirs to scope. Primary's config
     continues to apply. Peers are read/write accessible but aren't treated as projects themselves.
     You'll see this in my live setup — the main project has claude-dashboard as an additional dir.
@@ -764,6 +788,7 @@ making any changes.</code></pre>
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">22:30</span> · slide <span class="tf-slide">0:45</span> · through <span class="tf-through">23:15</span></div>
     Two decisions: which repo is primary, and how you brief Claude about the others.
     Orientation matters — Claude will happily edit frontend without ever reading its CLAUDE.md
     unless you tell it to. If you do cross-repo work often, save this orientation as a skill
@@ -804,6 +829,7 @@ making any changes.</code></pre>
     </tbody>
   </table>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">23:15</span> · slide <span class="tf-slide">0:45</span> · through <span class="tf-through">24:00</span></div>
     Theme: cross-repo sessions earn less autonomy, not more. Plan mode gate, explicit context hints,
     closer supervision. Also the strongest case against parallelism — don't try to run 3 cross-repo
     sessions at once.
@@ -834,6 +860,7 @@ making any changes.</code></pre>
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">24:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">24:30</span></div>
     Sequence-it is often cleaner than people think. Two focused sessions beat one tangled multi-repo
     session almost every time. But when the change must land together, the umbrella folder is the
     permanent home — give it its own CLAUDE.md describing system boundaries, and add skills tuned
@@ -893,6 +920,7 @@ making any changes.</code></pre>
   </table>
   <p style="font-size: 0.65em; margin-top: 12px;">Press <span class="key">?</span> inside Claude for the full shortcut reference.</p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">24:30</span> · slide <span class="tf-slide">1:30</span> · through <span class="tf-through">26:00</span></div>
     DEMO — Essential Shortcuts
 
     SCREEN: laptop (Warp)
@@ -970,6 +998,7 @@ making any changes.</code></pre>
   </table>
   <p style="font-size: 0.65em; margin-top: 12px;">Type <code>/</code> inside Claude to see the full list.</p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">26:00</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">27:00</span></div>
     Slash Commands
 
     SCREEN: laptop (Warp)
@@ -1015,6 +1044,7 @@ making any changes.</code></pre>
   }
 }</code></pre>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">27:00</span> · slide <span class="tf-slide">0:45</span> · through <span class="tf-through">27:45</span></div>
     DEMO — Plan Mode
 
     SCREEN: laptop (Warp)
@@ -1038,6 +1068,7 @@ making any changes.</code></pre>
     <p class="bridge">Your cockpit is ready. Next: stop repeating yourself every session — teach Claude once.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">27:45</span> · slide <span class="tf-slide">0:15</span> · through <span class="tf-through">28:00</span></div>
     Recap: CWD hygiene, terminal choice, plan mode. Three things.
     Bridge: with the cockpit right, the next question is what Claude already knows before you type anything —
     per-project configuration instead of per-session effort.
@@ -1061,6 +1092,7 @@ making any changes.</code></pre>
     <p style="margin-top: 0.8em;">By the end: settings, CLAUDE.md, skills, and hooks will carry your knowledge into every session automatically.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">28:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">28:30</span></div>
     This is the section where the audience starts saving real time.
     Skills especially — /update-jira is the canonical example.
     Frame it as: you're programming Claude's defaults, not its behavior.
@@ -1081,6 +1113,7 @@ making any changes.</code></pre>
     <li class="fragment"><code>/update-config</code> — ask Claude to update its own config</li>
   </ul>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">28:30</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">29:30</span></div>
     Key insight: Claude reads these files every session. If you keep telling Claude the same thing,
     make it a permanent instruction. Especially important for parallel work — you don't want to
     repeat context in every session.
@@ -1105,6 +1138,7 @@ Always request it explicitly by key when fetching Jira issues.</code></pre>
     <span class="blue">Project:</span> <code>.claude/CLAUDE.md</code> — repo-specific rules
   </p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">29:30</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">30:30</span></div>
     This is the real CLAUDE.md from my setup. Every session reads this automatically.
     No need to re-explain GitHub or Jira conventions — it's baked in.
   </aside>
@@ -1145,6 +1179,7 @@ Step 7: Return link to updated ticket</code></pre>
     </div>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">30:30</span> · slide <span class="tf-slide">2:30</span> · through <span class="tf-through">33:00</span></div>
     DEMO — /update-jira
 
     SCREEN: laptop (Warp) + Jira browser tab on side screen
@@ -1184,6 +1219,7 @@ Step 7: Return link to updated ticket</code></pre>
     <span class="purple">Your automated QA layer when you can't watch every session.</span>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">33:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">33:30</span></div>
     PostToolUse is another "encode it once" mechanism — like CLAUDE.md and skills, it lives in
     config and applies to every session automatically. I use it for the comment-your-tricky-code
     rule, but it's general — any rule that should fire after every edit belongs here.
@@ -1198,6 +1234,7 @@ Step 7: Return link to updated ticket</code></pre>
     <p class="bridge">Sessions now know your rules and workflows. The next bottleneck: capability — Claude still waits when it needs external data.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">33:30</span> · slide <span class="tf-slide">0:15</span> · through <span class="tf-through">33:45</span></div>
     Bridge: we've set up the cockpit (S1), made sessions lean (S2), encoded knowledge (S3).
     The next bottleneck is capability — sessions still block when they need external data (MCP, LSP).
   </aside>
@@ -1220,6 +1257,7 @@ Step 7: Return link to updated ticket</code></pre>
     <p style="margin-top: 0.8em;">By the end: Claude will type-check itself, query your database, read your browser, and trigger PR reviews — without you.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">33:45</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">34:15</span></div>
     Frame: each tool we add removes one more reason a session would need to interrupt you.
     LSP = type errors. MCP = data questions. Qodo = review feedback.
     Self-sufficient sessions are the last prerequisite before pure parallel workflows.
@@ -1258,6 +1296,7 @@ Step 7: Return link to updated ticket</code></pre>
 }</code></pre>
   <p class="fragment small">Sessions don't get stuck on type errors → more autonomous → more parallelism</p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">34:15</span> · slide <span class="tf-slide">1:30</span> · through <span class="tf-through">35:45</span></div>
     DEMO — TypeScript LSP
 
     SCREEN: laptop (Warp, TypeScript project)
@@ -1308,6 +1347,7 @@ Step 7: Return link to updated ticket</code></pre>
     <span class="purple">Self-sufficient sessions = more parallelism.</span>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">35:45</span> · slide <span class="tf-slide">1:15</span> · through <span class="tf-through">37:00</span></div>
     DEMO — MongoDB MCP
 
     SCREEN: laptop (Warp)
@@ -1340,6 +1380,9 @@ Step 7: Return link to updated ticket</code></pre>
   <div class="highlight-box" style="font-size: 0.8em;">
     Credentials never touch disk — <code>op://</code> URIs resolve at runtime via 1Password CLI.
   </div>
+  <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">37:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">37:30</span></div>
+  </aside>
 </section>
 
 <!-- 4.4: MCP Claude in Chrome -->
@@ -1363,6 +1406,7 @@ Step 7: Return link to updated ticket</code></pre>
   <pre class="fragment"><code class="language-text">"Check the console errors in Chrome
  and fix the issue in the code."</code></pre>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">37:30</span> · slide <span class="tf-slide">1:30</span> · through <span class="tf-through">39:00</span></div>
     DEMO — Claude in Chrome
 
     SCREEN: chrome (staging app with known bug) + laptop (Warp)
@@ -1391,6 +1435,7 @@ Step 7: Return link to updated ticket</code></pre>
   </div>
   <p class="fragment small purple">Drop a comment, walk away, come back to feedback — another parallel lane.</p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">39:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">39:30</span></div>
     Qodo runs as a PR bot. These three commands are the ones worth knowing.
     /review is fast and cheap; /agentic_review is slower but catches more; /ask is great for
     onboarding yourself to someone else's PR.
@@ -1405,6 +1450,7 @@ Step 7: Return link to updated ticket</code></pre>
     <p class="bridge">Sessions are now autonomous. But how do you actually give them work? Let's talk about the input side.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">39:30</span> · slide <span class="tf-slide">0:15</span> · through <span class="tf-through">39:45</span></div>
     Bridge: we've been focused on making sessions capable and independent.
     The next question is: what's the fastest way to feed work into them?
     CLI-first workflows are the answer — paste a URL, walk away.
@@ -1428,6 +1474,7 @@ Step 7: Return link to updated ticket</code></pre>
     <p style="margin-top: 0.8em;">By the end: PR reviews, CI failures, Jira updates, and repo management will each be a single command.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">39:45</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">40:15</span></div>
     Three slides, three patterns. Each one is: URL in, result out, no copy-paste.
     This is the shape of work that parallelizes trivially —
     because there's nothing to watch and nothing to explain.
@@ -1465,6 +1512,9 @@ gh pr diff 297
     Enforce it in CLAUDE.md:<br>
     <code>"Always use the gh CLI instead of WebFetch or browser tools."</code>
   </div>
+  <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">40:15</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">40:45</span></div>
+  </aside>
 </section>
 
 <!-- 5.2: Fix PR Review Comments -->
@@ -1488,6 +1538,7 @@ gh pr diff 297
     Close the loop with <code>/update-jira</code> — the skill we saw in §3.3.
   </p>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">40:45</span> · slide <span class="tf-slide">1:30</span> · through <span class="tf-through">42:15</span></div>
     DEMO — Fix PR Review Comments
 
     SCREEN: laptop (Warp)
@@ -1516,6 +1567,7 @@ gh pr diff 297
     Come back when notifications arrive.
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">42:15</span> · slide <span class="tf-slide">1:30</span> · through <span class="tf-through">43:45</span></div>
     DEMO — Fix Failed CI
 
     SCREEN: laptop (Warp)
@@ -1550,6 +1602,7 @@ gh pr diff 297
 alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
   /contents/scripts/deploy-pr.sh --jq ".content" | base64 -d)'</code></pre>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">43:45</span> · slide <span class="tf-slide">1:00</span> · through <span class="tf-through">44:45</span></div>
     DEMO — Utility Scripts
 
     SCREEN: laptop (Warp)
@@ -1571,6 +1624,7 @@ alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
     <p class="bridge">You now have everything. Time to put it all together.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">44:45</span> · slide <span class="tf-slide">0:15</span> · through <span class="tf-through">45:00</span></div>
     Bridge: this is the moment. Every prerequisite is in place:
     cockpit (S1), lean sessions (S2), encoded knowledge (S3),
     notifications (S4), self-sufficient tools (S5), CLI inputs (S6).
@@ -1595,6 +1649,7 @@ alias deploy-pr='bash <(gh api repos/winn-ai/manual-actions\
     <p style="margin-top: 0.8em;">By the end: worktrees, a dashboard, and remote control — the infrastructure for running 5+ Claude sessions simultaneously.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">45:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">45:30</span></div>
     This is the climax. Don't rush the framing.
     Everything before this was a prerequisite — now it pays off.
     The audience should feel the momentum: "oh, THIS is why we covered all that."
@@ -1627,6 +1682,7 @@ git worktree add ../my-repo-new-api  WINN-1235-new-api</code></pre>
     Branch name = Jira ticket = Warp tab name = session purpose.
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">45:30</span> · slide <span class="tf-slide">2:30</span> · through <span class="tf-through">48:00</span></div>
     DEMO — Worktrees
 
     SCREEN: laptop (Warp)
@@ -1662,6 +1718,7 @@ git worktree add ../my-repo-new-api  WINN-1235-new-api</code></pre>
     You need a chef's station view: every session's state, at a glance, right now.
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">48:00</span> · slide <span class="tf-slide">2:30</span> · through <span class="tf-through">50:30</span></div>
     Pause. Let the audience sit with the kitchen image.
     "Keep up or be replaced" is blunt — say it plainly, don't soften it.
     Then the green box is the pivot into the dashboard demo. Don't rush.
@@ -1700,6 +1757,7 @@ Python HTTP Server
     Air traffic control for parallel Claude sessions.
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">50:30</span> · slide <span class="tf-slide">3:30</span> · through <span class="tf-through">54:00</span></div>
     DEMO — Dashboard
 
     SCREEN: dashboard (browser tab)
@@ -1731,6 +1789,7 @@ Python HTTP Server
     </ul>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">54:00</span> · slide <span class="tf-slide">3:30</span> · through <span class="tf-through">57:30</span></div>
     DEMO — Remote Control
 
     SCREEN: phone (trigger) + laptop (Warp receives)
@@ -1751,6 +1810,7 @@ Python HTTP Server
     <p class="bridge">Let's see the daily workflow that ties it all together.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">57:30</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">58:00</span></div>
     Bridge: from "here are the tools" to "here's the daily routine."
     The recipe in S8 is the practical, repeatable version of everything we just showed.
   </aside>
@@ -1773,6 +1833,7 @@ Python HTTP Server
     <p style="margin-top: 0.8em;">By the end: one recipe you can follow starting tomorrow morning.</p>
   </div>
   <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">58:00</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">58:30</span></div>
     Keep this quick. The audience is ready for the payoff.
     The recipe slide is the one they'll photograph.
   </aside>
@@ -1791,6 +1852,9 @@ Python HTTP Server
     <div class="recipe-step fragment"><div class="recipe-num">8</div><div><code>/update-jira</code> to sync, <code>deploy-pr</code> to deploy</div></div>
     <div class="recipe-step fragment"><div class="recipe-num">9</div><div>Dashboard shows the big picture at any time</div></div>
   </div>
+  <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">58:30</span> · slide <span class="tf-slide">0:45</span> · through <span class="tf-through">59:15</span></div>
+  </aside>
 </section>
 
 <section class="center-slide">
@@ -1812,6 +1876,9 @@ Python HTTP Server
       <p>10+ PRs / day</p>
     </div>
   </div>
+  <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">59:15</span> · slide <span class="tf-slide">0:30</span> · through <span class="tf-through">59:45</span></div>
+  </aside>
 </section>
 
 <section class="center-slide">
@@ -1822,6 +1889,9 @@ Python HTTP Server
     Dashboard: <code>~/scripts/claude-dashboard</code><br>
     Scripts: <code>winn-ai/manual-actions</code>
   </p>
+  <aside class="notes">
+    <div class="timeflow" style="float: right; font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: #6a6a6a; background: #f4f4f4; padding: 3px 8px; border-radius: 4px; margin: 0 0 6px 8px;">⏱ elapsed <span class="tf-elapsed">59:45</span> · slide <span class="tf-slide">0:15</span> · through <span class="tf-through">60:00</span></div>
+  </aside>
 </section>
 
 </div><!-- /slides -->
